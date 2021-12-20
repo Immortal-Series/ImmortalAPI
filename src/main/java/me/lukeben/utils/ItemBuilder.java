@@ -1,7 +1,5 @@
 package me.lukeben.utils;
 
-import com.mojang.authlib.GameProfile;
-import com.mojang.authlib.properties.Property;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Singular;
@@ -63,7 +61,7 @@ public class ItemBuilder {
             return this;
         }
 
-        public Builder skull(String base64) {
+        /*public Builder skull(String base64) {
             SkullMeta meta = (SkullMeta) current.getItemMeta();
             assert meta != null;
             GameProfile profile = new GameProfile(UUID.randomUUID(), null);
@@ -80,6 +78,10 @@ public class ItemBuilder {
             return this;
         }
 
+        public Builder addEnchantment(Enchantment enchantment, int level) {
+            current.addUnsafeEnchantment(enchantment, level);
+            return this;
+        }*/
         public Builder addEnchantment(Enchantment enchantment, int level) {
             current.addUnsafeEnchantment(enchantment, level);
             return this;
