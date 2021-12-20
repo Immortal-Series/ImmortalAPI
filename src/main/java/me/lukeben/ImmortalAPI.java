@@ -8,11 +8,10 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class ImmortalAPI extends JavaPlugin {
 
     @Getter
-    private static ImmortalAPI instance;
+    private static transient final ImmortalAPI instance = new ImmortalAPI();
 
     @Override
     public void onEnable() {
-        instance = this;
         getDataFolder().mkdirs();
         Bukkit.getPluginManager().registerEvents(new MenuListener(), this);
     }
