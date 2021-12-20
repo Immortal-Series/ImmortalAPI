@@ -13,6 +13,7 @@ public class ImmortalAPI extends JavaPlugin {
     @Override
     public void onEnable() {
         getDataFolder().mkdirs();
+
         Bukkit.getPluginManager().registerEvents(new MenuListener(), this);
     }
 
