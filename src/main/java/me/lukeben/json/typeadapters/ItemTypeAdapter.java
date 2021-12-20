@@ -33,7 +33,7 @@ public class ItemTypeAdapter implements JsonSerializer<ItemBuilder>, JsonDeseria
             builder.item(material, amount, data);
 
             if(skullIdentifier != null) {
-                builder.skull(skullIdentifier);
+                builder.skull(Bukkit.getPlayer(skullIdentifier));
             }
 
             if(displayName != null) {
