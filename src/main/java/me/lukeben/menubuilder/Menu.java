@@ -121,7 +121,7 @@ public abstract class Menu {
     }
 
     public void refreshTask() {
-        this.refreshTask = Bukkit.getScheduler().runTaskTimerAsynchronously(ImmortalAPI.getInstance(), this::refresh, 0, 20);
+        this.refreshTask = Bukkit.getScheduler().runTaskTimerAsynchronously(ImmortalAPI.getInstance().getPlugin(), this::refresh, 0, 20);
     }
 
     public void updateTitle(String title) {

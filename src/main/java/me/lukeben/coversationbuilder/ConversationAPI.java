@@ -20,7 +20,7 @@ public class ConversationAPI {
      */
 
     public static void build(Player player, Prompt prompt, int timeout, String quitSequence, Consumer<ConversationAbandonedEvent> event) {
-        final Conversation conversation = new ConversationFactory(ImmortalAPI.getInstance())
+        final Conversation conversation = new ConversationFactory(ImmortalAPI.getInstance().getPlugin())
                 .withModality(true)
                 .withEscapeSequence(quitSequence)
                 .addConversationAbandonedListener(e -> event.accept(e))
@@ -38,7 +38,7 @@ public class ConversationAPI {
      * @param quitSequence
      */
     public static void build(Player player, Prompt prompt, int timeout, String quitSequence) {
-        final Conversation conversation = new ConversationFactory(ImmortalAPI.getInstance())
+        final Conversation conversation = new ConversationFactory(ImmortalAPI.getInstance().getPlugin())
                 .withModality(true)
                 .withEscapeSequence(quitSequence)
                 .withTimeout(timeout)

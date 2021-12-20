@@ -88,7 +88,7 @@ public class SimpleConfig {
     }
 
     private static File getFile(String fileName) {
-        return new File(ImmortalAPI.getInstance().getDataFolder(), fileName + ".json");
+        return new File(ImmortalAPI.getInstance().getPlugin().getDataFolder(), fileName + ".json");
     }
 
 }

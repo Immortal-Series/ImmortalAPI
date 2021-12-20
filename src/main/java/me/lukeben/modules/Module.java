@@ -28,9 +28,9 @@ public abstract class Module implements ModuleController {
     }
 
     public void registerEvents(final Listener... listeners) {
-        final PluginManager pm = ImmortalAPI.getInstance().getServer().getPluginManager();
+        final PluginManager pm = ImmortalAPI.getInstance().getPlugin().getServer().getPluginManager();
         for (final Listener l : listeners)
-            pm.registerEvents(l, ImmortalAPI.getInstance());
+            pm.registerEvents(l, ImmortalAPI.getInstance().getPlugin());
     }
 
     public void loadByClass(final Class... classes) {

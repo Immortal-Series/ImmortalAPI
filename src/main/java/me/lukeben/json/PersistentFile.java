@@ -53,7 +53,7 @@ public abstract class PersistentFile {
     protected File getFile(boolean data, String name) {
 
         if (data) {
-            File dataFolder = new File(ImmortalAPI.getInstance().getDataFolder() + "/data");
+            File dataFolder = new File(ImmortalAPI.getInstance().getPlugin().getDataFolder() + "/data");
             dataFolder.mkdirs();
             return new File(dataFolder , name + ".json");
         }

@@ -50,7 +50,7 @@ public class MenuListener implements Listener {
     @EventHandler
     public void onInventoryOpen(final InventoryOpenEvent event) {
         final Player player = (Player) event.getPlayer();
-        Bukkit.getScheduler().runTaskLater(ImmortalAPI.getInstance(), () -> {
+        Bukkit.getScheduler().runTaskLater(ImmortalAPI.getInstance().getPlugin(), () -> {
             final Menu menu = Menu.getMenu(player);
 
             if (menu == null) return;

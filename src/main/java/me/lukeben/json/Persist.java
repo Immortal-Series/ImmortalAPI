@@ -45,7 +45,7 @@ public class Persist {
     // ------------------------------------------------------------ //
 
     public static File getFile(final String name) {
-        return new File(ImmortalAPI.getInstance().getDataFolder(), name + ".json");
+        return new File(ImmortalAPI.getInstance().getPlugin().getDataFolder(), name + ".json");
     }
 
     public File getFile(final Class<?> clazz) {
@@ -57,7 +57,7 @@ public class Persist {
     }
 
     public File getFile(final boolean data, final String name) {
-        File dataFolder = ImmortalAPI.getInstance().getDataFolder();
+        File dataFolder = ImmortalAPI.getInstance().getPlugin().getDataFolder();
 
         if (data) {
             dataFolder = new File(dataFolder, "/data");
@@ -98,8 +98,8 @@ public class Persist {
         try {
             return gson.fromJson(content, clazz);
         } catch (final Exception ex) {
-            ImmortalAPI.getInstance().getLogger().severe("Failed to parse " + file.toString() + ": " + ex.getMessage());
-            Bukkit.getPluginManager().disablePlugin(ImmortalAPI.getInstance());
+            ImmortalAPI.getInstance().getPlugin().getLogger().severe("Failed to parse " + file.toString() + ": " + ex.getMessage());
+            Bukkit.getPluginManager().disablePlugin(ImmortalAPI.getInstance().getPlugin());
         }
 
         return null;
