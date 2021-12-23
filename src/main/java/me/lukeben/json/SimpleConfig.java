@@ -29,6 +29,11 @@ public class SimpleConfig {
 
     protected transient File file;
 
+    public SimpleConfig(final File file,  HashMap<Class, Object> typeAdapters) {
+        this.file = file;
+        this.typeAdapters = typeAdapters;
+    }
+
     public SimpleConfig(final File file) {
         this.file = file;
     }
@@ -39,7 +44,7 @@ public class SimpleConfig {
     }
 
     public SimpleConfig(final String configName, HashMap<Class, Object> typeAdapters) {
-        this(getFile(configName));
+        this(getFile(configName), typeAdapters);
         this.typeAdapters = typeAdapters;
     }
 
