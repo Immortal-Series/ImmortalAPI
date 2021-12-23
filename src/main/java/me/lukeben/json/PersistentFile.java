@@ -1,7 +1,9 @@
 package me.lukeben.json;
 
+import com.google.common.collect.Maps;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.TypeAdapter;
 import me.lukeben.ImmortalAPI;
 import me.lukeben.json.typeadapters.ItemTypeAdapter;
 import me.lukeben.json.typeadapters.LocationTypeAdapter;
@@ -14,6 +16,7 @@ import org.bukkit.World;
 import java.io.File;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -21,8 +24,15 @@ public abstract class PersistentFile {
 
     private static List<PersistentFile> files = new ArrayList<>();
 
+    private HashMap<Class, TypeAdapter> typeAdapters;
+    protected PersistentFile(HashMap<Class, TypeAdapter> typeAdapters) {
+        files.add(this);
+        this.typeAdapters = typeAdapters;
+    }
+
     protected PersistentFile() {
         files.add(this);
+        this.typeAdapters = Maps.newHashMap();
     }
 
     // ----------------------------------------
@@ -37,7 +47,7 @@ public abstract class PersistentFile {
     // ----------------------------------------
 
     private GsonBuilder buildGson() {
-        return new GsonBuilder()
+        GsonBuilder builder = new GsonBuilder()
                 .serializeNulls()
                 .enableComplexMapKeySerialization()
                 .excludeFieldsWithModifiers(Modifier.TRANSIENT)
@@ -48,6 +58,10 @@ public abstract class PersistentFile {
                 .setPrettyPrinting()
                 .serializeNulls()
                 .excludeFieldsWithoutExposeAnnotation();
+        for(Class cl : typeAdapters.keySet()) {
+            builder.registerTypeAdapter(cl,typeAdapters.get(cl));
+        }
+        return builder;
     }
 
     protected File getFile(boolean data, String name) {
