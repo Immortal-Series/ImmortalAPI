@@ -29,9 +29,9 @@ public class SimpleConfig {
 
     protected transient File file;
 
-    public SimpleConfig(final File file,  HashMap<Class, Object> typeAdapters) {
+    public SimpleConfig(final File file,  HashMap<Class, Object> adapters) {
         this.file = file;
-        this.typeAdapters = typeAdapters;
+        this.typeAdapters = adapters;
     }
 
     public SimpleConfig(final File file) {
@@ -43,9 +43,9 @@ public class SimpleConfig {
         this.typeAdapters = Maps.newHashMap();
     }
 
-    public SimpleConfig(final String configName, HashMap<Class, Object> typeAdapters) {
-        this(getFile(configName), typeAdapters);
-        this.typeAdapters = typeAdapters;
+    public SimpleConfig(final String configName, HashMap<Class, Object> adapters) {
+        this(getFile(configName), adapters);
+        this.typeAdapters = adapters;
     }
 
     private GsonBuilder getGson() {
