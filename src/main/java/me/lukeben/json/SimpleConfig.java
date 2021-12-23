@@ -1,8 +1,10 @@
 package me.lukeben.json;
 
+import com.google.common.collect.Maps;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.TypeAdapter;
 import lombok.Getter;
 import me.lukeben.ImmortalAPI;
 import me.lukeben.json.typeadapters.ItemTypeAdapter;
@@ -15,10 +17,13 @@ import org.bukkit.World;
 
 import java.io.File;
 import java.lang.reflect.Modifier;
+import java.util.HashMap;
 import java.util.UUID;
 
 @Getter
 public class SimpleConfig {
+
+    private HashMap<Class, TypeAdapter> typeAdapters;
 
     private transient Gson gson = getGson().create();
 
@@ -30,6 +35,12 @@ public class SimpleConfig {
 
     public SimpleConfig(final String configName) {
         this(getFile(configName));
+        this.typeAdapters = Maps.newHashMap();
+    }
+
+    public SimpleConfig(final String configName, HashMap<Class, TypeAdapter> typeAdapters) {
+        this(getFile(configName));
+        this.typeAdapters = typeAdapters;
     }
 
     private GsonBuilder getGson() {
