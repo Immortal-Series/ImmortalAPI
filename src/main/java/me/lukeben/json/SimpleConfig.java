@@ -23,16 +23,9 @@ import java.util.UUID;
 @Getter
 public class SimpleConfig {
 
-    private HashMap<Class, Object> typeAdapters;
-
     private transient Gson gson = getGson().create();
 
     protected transient File file;
-
-    public SimpleConfig(final File file,  HashMap<Class, Object> adapters) {
-        this.file = file;
-        this.typeAdapters = adapters;
-    }
 
     public SimpleConfig(final File file) {
         this.file = file;
@@ -40,12 +33,6 @@ public class SimpleConfig {
 
     public SimpleConfig(final String configName) {
         this(getFile(configName));
-        this.typeAdapters = Maps.newHashMap();
-    }
-
-    public SimpleConfig(final String configName, HashMap<Class, Object> adapters) {
-        this(getFile(configName), adapters);
-        this.typeAdapters = adapters;
     }
 
     private GsonBuilder getGson() {
@@ -60,9 +47,6 @@ public class SimpleConfig {
                 .serializeNulls()
                 .enableComplexMapKeySerialization()
                 .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE);
-        for(Class cl : typeAdapters.keySet()) {
-            builder.registerTypeAdapter(cl, typeAdapters.get(cl));
-        }
         return builder;
     }
 
@@ -73,7 +57,12 @@ public class SimpleConfig {
         return c == 'd' || c == 'D';
     }
 
-    public void load() {
+    public void load(HashMap<Class, Object> typeAdapters) {
+        GsonBuilder builder = getGson();
+        for(Class cl : typeAdapters.keySet()) {
+            builder.registerTypeAdapter(cl, typeAdapters.get(cl));
+        }
+        gson = builder.create();
         if (this.getFile().isFile()) {
             String content = DiskUtil.read(this.getFile());
             content = content.trim();
