@@ -23,7 +23,7 @@ import java.util.UUID;
 @Getter
 public class SimpleConfig {
 
-    private HashMap<Class, TypeAdapter> typeAdapters;
+    private HashMap<Class, Object> typeAdapters;
 
     private transient Gson gson = getGson().create();
 
@@ -38,7 +38,7 @@ public class SimpleConfig {
         this.typeAdapters = Maps.newHashMap();
     }
 
-    public SimpleConfig(final String configName, HashMap<Class, TypeAdapter> typeAdapters) {
+    public SimpleConfig(final String configName, HashMap<Class, Object> typeAdapters) {
         this(getFile(configName));
         this.typeAdapters = typeAdapters;
     }
@@ -56,7 +56,7 @@ public class SimpleConfig {
                 .enableComplexMapKeySerialization()
                 .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE);
         for(Class cl : typeAdapters.keySet()) {
-            builder.registerTypeAdapter(cl,typeAdapters.get(cl));
+            builder.registerTypeAdapter(cl, typeAdapters.get(cl));
         }
         return builder;
     }
