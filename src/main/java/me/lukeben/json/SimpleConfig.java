@@ -44,7 +44,7 @@ public class SimpleConfig {
     }
 
     private GsonBuilder getGson() {
-        return new GsonBuilder()
+        GsonBuilder builder = new GsonBuilder()
                 .excludeFieldsWithModifiers(Modifier.TRANSIENT)
                 .registerTypeAdapter(UUID.class, new UUIDTypeAdapter())
                 .registerTypeAdapter(ItemBuilder.class, new ItemTypeAdapter())
@@ -55,6 +55,10 @@ public class SimpleConfig {
                 .serializeNulls()
                 .enableComplexMapKeySerialization()
                 .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE);
+        for(Class cl : typeAdapters.keySet()) {
+            builder.registerTypeAdapter(cl,typeAdapters.get(cl));
+        }
+        return builder;
     }
 
     protected static boolean contentRequestsDefaults(final String content) {
