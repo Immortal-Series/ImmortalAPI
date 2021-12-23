@@ -24,15 +24,14 @@ public abstract class PersistentFile {
 
     private static List<PersistentFile> files = new ArrayList<>();
 
-    private HashMap<Class, TypeAdapter> typeAdapters;
-    protected PersistentFile(HashMap<Class, TypeAdapter> typeAdapters) {
+    private HashMap<Class, TypeAdapter> typeAdapters = Maps.newHashMap();
+    protected PersistentFile(HashMap<Class, TypeAdapter> adapters) {
         files.add(this);
-        this.typeAdapters = typeAdapters;
+        typeAdapters.putAll(adapters);
     }
 
     protected PersistentFile() {
         files.add(this);
-        this.typeAdapters = Maps.newHashMap();
     }
 
     // ----------------------------------------
