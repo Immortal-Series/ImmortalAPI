@@ -4,6 +4,8 @@ import com.google.common.collect.Lists;
 import com.google.gson.*;
 import me.lukeben.coversationbuilder.ConvPrompt;
 import me.lukeben.coversationbuilder.ConversationAPI;
+import me.lukeben.json.Accessor;
+import me.lukeben.json.SimpleConfig;
 import me.lukeben.json.typeadapters.ItemTypeAdapter;
 import me.lukeben.json.typeadapters.LocationTypeAdapter;
 import me.lukeben.json.typeadapters.UUIDTypeAdapter;
@@ -36,7 +38,7 @@ public class ConfigMenu extends Menu {
     }
 
     private void buildMenu(Player player, Object o, String fileName) {
-        JsonObject element = gson.fromJson(gson.toJson(o), JsonElement.class).getAsJsonObject();
+        JsonObject element = gson.toJsonTree(o).getAsJsonObject();
         List<PagedItem> items = getPageItems(element, fileName);
 
         for (Map.Entry<String, JsonElement> elementEntry : element.entrySet()) {
