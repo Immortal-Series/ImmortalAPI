@@ -30,6 +30,27 @@ public class ConfigArrayMenu extends PagedMenu {
         this.fileName = fileName;
         this.backSlot = backSlot;
         this.nextSlot = nextSlot;
+        setAddButton();
+        setItems(items, page, itemSlots);
+        setRemoveButton();
+    }
+
+    private void setItems(List<PagedItem> items, int page, List<Integer> slots) {
+        int amountPerPage = slots.size();
+        int maxNumber = slots.size() * page;
+
+        for (int current = maxNumber - amountPerPage; current < maxNumber; current++) {
+            //checking if there is enough tags to fully fill that page.
+            if (items.size() <= current) break;
+            //finding a slot in the menu for that tag.
+            for (int slot : slots) {
+                if (!getItems().containsKey(slot)) {
+                    PagedItem item = items.get(current);
+                    setItem(slot, item.getItem(), item.getExecutor());
+                }
+                break;
+            }
+        }
     }
 
     public void setAddButton() {
