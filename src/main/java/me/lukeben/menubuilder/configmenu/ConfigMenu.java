@@ -42,7 +42,7 @@ public class ConfigMenu extends Menu {
         List<PagedItem> items = getPageItems(element, fileName);
 
         for (Map.Entry<String, JsonElement> elementEntry : element.entrySet()) {
-            JsonObject entry = elementEntry.getValue().getAsJsonObject();
+            JsonElement entry = elementEntry.getValue();
 
             if (entry.isJsonArray()) {
                 setItem(getFirstFreeSlot(), ItemBuilder.builder().item(Material.BOOK, 1).displayName("&3&l" + elementEntry.getKey()).toItemStack(),
@@ -64,7 +64,7 @@ public class ConfigMenu extends Menu {
         List<PagedItem> items = getPageItems(element, fileName);
 
         for (Map.Entry<String, JsonElement> elementEntry : element.entrySet()) {
-            JsonObject entry = elementEntry.getValue().getAsJsonObject();
+            JsonElement entry = elementEntry.getValue();
 
             if (entry.isJsonArray()) {
                 setItem(getFirstFreeSlot(), ItemBuilder.builder().item(Material.BOOK, 1).displayName("&3&l" + elementEntry.getKey()).toItemStack(),
