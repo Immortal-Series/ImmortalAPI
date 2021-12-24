@@ -22,6 +22,7 @@ public class PagedMenu extends Menu {
         this.itemSlots = itemSlots;
         setButtons(page, list, backSlot, nextSlot, BACK, NEXT);
         setItems(list, page, itemSlots);
+        displayMenu();
     }
 
     private void setItems(List<PagedItem> items, int page, List<Integer> slots) {
