@@ -89,7 +89,6 @@ public class ConfigMenu extends Menu {
                 List<PagedItem> childItems = getPageItems(elementEntry.getValue().getAsJsonObject(), fileName);
                 ClickExecutor clickExecutor = event -> new ConfigArrayMenu(getPlayer(), fileName, 1, 18, 26, childItems, slots, elementEntry.getValue().getAsJsonArray());
                 items.add(new PagedItem(ItemBuilder.builder().item(Material.BOOK, 1).displayName("&3&l" + elementEntry.getKey()).toItemStack(), clickExecutor));
-                setItem(getFirstFreeSlot(), ItemBuilder.builder().item(Material.BOOK, 1).displayName("&3&l" + elementEntry.getKey()).toItemStack(), clickExecutor);
             } else if (elementEntry.getValue().isJsonPrimitive()) {
                 ClickExecutor clickExecutor = event -> {
                     ConvPrompt prompt = ConvPrompt.builder().promptText("&7Please type new value for '" + elementEntry.getKey() + "' or type QUIT to quit!").build();
@@ -105,13 +104,11 @@ public class ConfigMenu extends Menu {
                     }
                 };
                 items.add(new PagedItem(ItemBuilder.builder().item(Material.PAPER, 1).displayName("&b" + elementEntry.getKey()).lore("&7Value: " + elementEntry.getValue().toString()).toItemStack(), clickExecutor));
-                setItem(getFirstFreeSlot(), ItemBuilder.builder().item(Material.PAPER, 1).displayName("&b" + elementEntry.getKey()).lore("&7Value: " + elementEntry.getValue().toString()).toItemStack(), clickExecutor);
             } else if (elementEntry.getValue().isJsonObject()) {
                 ClickExecutor clickExecutor = event -> {
                     buildMenu(getPlayer(), element, fileName);
                 };
                 items.add(new PagedItem(ItemBuilder.builder().item(Material.BOOK, 1).displayName("&3&l" + elementEntry.getKey()).toItemStack(), clickExecutor));
-                setItem(getFirstFreeSlot(), ItemBuilder.builder().item(Material.BOOK, 1).displayName("&3&l" + elementEntry.getKey()).toItemStack(), clickExecutor);
             }
 
         }
