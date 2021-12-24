@@ -12,6 +12,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitTask;
 
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
@@ -75,6 +76,12 @@ public abstract class Menu {
     protected void setItem(final int slot, final ItemStack item) {
         items.put(slot, item);
         CompletableFuture.runAsync(() -> inventory.setItem(slot, item));
+    }
+
+    protected void setFiller(ItemStack item, List<Integer> slots) {
+        for(int slot : slots) {
+            setItem(slot, item);
+        }
     }
 
     // ------------------------------------------------------------------
