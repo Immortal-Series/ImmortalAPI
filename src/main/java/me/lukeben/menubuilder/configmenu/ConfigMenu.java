@@ -81,12 +81,15 @@ public class ConfigMenu extends Menu {
         displayMenu();
     }
 
-    private List<PagedItem> getPageItems(JsonObject element, String fileName) {
+    private List<PagedItem> getPageItems(JsonElement jsonElement, String fileName) {
         List<PagedItem> items = Lists.newArrayList();
+        if(jsonElement.isJsonPrimitive()) return items;
+        JsonObject element = jsonElement.getAsJsonObject();
+
         for (Map.Entry<String, JsonElement> elementEntry : element.entrySet()) {
 
             if (elementEntry.getValue().isJsonArray()) {
-                List<PagedItem> childItems = getPageItems(elementEntry.getValue().getAsJsonObject(), fileName);
+                List<PagedItem> childItems = getPageItems(elementEntry.getValue(), fileName);
                 ClickExecutor clickExecutor = event -> new ConfigArrayMenu(getPlayer(), fileName, 1, 18, 26, childItems, slots, elementEntry.getValue().getAsJsonArray());
                 items.add(new PagedItem(ItemBuilder.builder().item(Material.BOOK, 1).displayName("&3&l" + elementEntry.getKey()).toItemStack(), clickExecutor));
             } else if (elementEntry.getValue().isJsonPrimitive()) {
