@@ -4,7 +4,6 @@ import com.google.common.collect.Lists;
 import com.google.gson.*;
 import me.lukeben.coversationbuilder.ConvPrompt;
 import me.lukeben.coversationbuilder.ConversationAPI;
-import me.lukeben.json.Accessor;
 import me.lukeben.json.SimpleConfig;
 import me.lukeben.json.typeadapters.ItemTypeAdapter;
 import me.lukeben.json.typeadapters.LocationTypeAdapter;
@@ -30,14 +29,38 @@ public class ConfigMenu extends Menu {
 
     private List<Integer> slots;
 
-    public ConfigMenu(Player player, String fileName, JsonObject element) {
+    public ConfigMenu(Player player, String fileName, SimpleConfig config) {
         super(player, "&e&lSettings -> &7" + fileName + ".json", 4);
         this.slots = Lists.newArrayList();
         for (int i = 0; i < 27; i++) slots.add(i);
-        buildMenu(player, element, fileName);
+        start(config, fileName);
+    }
+
+    private void start(SimpleConfig config, String fileName) {
+        JsonObject element = gson.fromJson(gson.toJson(config), JsonObject.class).getAsJsonObject();
+
+        List<PagedItem> items = getPageItems(element, fileName);
+
+        for (Map.Entry<String, JsonElement> elementEntry : element.entrySet()) {
+            JsonObject entry = elementEntry.getValue().getAsJsonObject();
+
+            if (entry.isJsonArray()) {
+                setItem(getFirstFreeSlot(), ItemBuilder.builder().item(Material.BOOK, 1).displayName("&3&l" + elementEntry.getKey()).toItemStack(),
+                        event -> new ConfigArrayMenu(getPlayer(), fileName, 1, 18, 26, items, slots, entry.getAsJsonArray()));
+            } else if (entry.isJsonPrimitive()) {
+                setItem(getFirstFreeSlot(), ItemBuilder.builder().item(Material.PAPER, 1).displayName("&b" + elementEntry.getKey()).lore("&7Value: " + elementEntry.getValue().toString()).toItemStack());
+            } else if (entry.isJsonObject()) {
+                setItem(getFirstFreeSlot(), ItemBuilder.builder().item(Material.BOOK, 1).displayName("&3&l" + elementEntry.getKey()).toItemStack(), event -> {
+                    buildMenu(getPlayer(), element, fileName);
+                });
+            }
+
+        }
+        displayMenu();
     }
 
     private void buildMenu(Player player, JsonObject element, String fileName) {
+
         List<PagedItem> items = getPageItems(element, fileName);
 
         for (Map.Entry<String, JsonElement> elementEntry : element.entrySet()) {
