@@ -30,15 +30,14 @@ public class ConfigMenu extends Menu {
 
     private List<Integer> slots;
 
-    public ConfigMenu(Player player, String fileName, Object o) {
+    public ConfigMenu(Player player, String fileName, JsonObject element) {
         super(player, "&e&lSettings -> &7" + fileName + ".json", 4);
         this.slots = Lists.newArrayList();
         for (int i = 0; i < 27; i++) slots.add(i);
-        buildMenu(player, o, fileName);
+        buildMenu(player, element, fileName);
     }
 
-    private void buildMenu(Player player, Object o, String fileName) {
-        JsonObject element = gson.toJsonTree(o).getAsJsonObject();
+    private void buildMenu(Player player, JsonObject element, String fileName) {
         List<PagedItem> items = getPageItems(element, fileName);
 
         for (Map.Entry<String, JsonElement> elementEntry : element.entrySet()) {
