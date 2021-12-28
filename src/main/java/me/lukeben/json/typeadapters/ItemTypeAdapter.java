@@ -1,5 +1,6 @@
 package me.lukeben.json.typeadapters;
 
+import com.google.common.collect.Maps;
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import me.lukeben.utils.ItemBuilder;
@@ -27,11 +28,11 @@ public class ItemTypeAdapter implements JsonSerializer<ItemBuilder>, JsonDeseria
             String skullIdentifier = object.get("SKULL_ID").equals("") ? null : object.get("SKULL_ID").getAsString();
             String displayName = object.get("DISPLAY_NAME").equals("") ? null : object.get("DISPLAY_NAME").getAsString();
             boolean glowing = object.get("GLOWING").getAsBoolean();
-            Type enchantType = new TypeToken<Map<Enchantment, Integer>>() {}.getType();
+            Type enchantType = new TypeToken<Map<String, Integer>>() {}.getType();
             Type listType = new TypeToken<List<String>>() {}.getType();
             Type flagType = new TypeToken<List<ItemFlag>>() {}.getType();
             List<String> lore = new Gson().fromJson(object.get("LORE"), listType);
-            Map<Enchantment, Integer> enchantments =  new Gson().fromJson(object.get("ENCHANTMENTS"), enchantType);
+            Map<String, Integer> enchantments =  new Gson().fromJson(object.get("ENCHANTMENTS"), enchantType);
             List<ItemFlag> flags = new Gson().fromJson(object.get("FLAGS"), flagType);
 
             ItemBuilder.Builder builder = ItemBuilder.builder();
@@ -55,7 +56,7 @@ public class ItemTypeAdapter implements JsonSerializer<ItemBuilder>, JsonDeseria
             }
 
             flags.forEach(f -> builder.flag(f));
-            enchantments.forEach((e, l) -> builder.addEnchantment(e, l));
+            enchantments.forEach((e, l) -> builder.addEnchantment(Enchantment.getByName(e), l));
 
             return builder.build();
         } catch (Exception ex) {
@@ -76,9 +77,11 @@ public class ItemTypeAdapter implements JsonSerializer<ItemBuilder>, JsonDeseria
             object.add("SKULL_ID", itemBuilder.getSkullIdentifier() != null ? new JsonPrimitive(itemBuilder.getSkullIdentifier()) : new JsonPrimitive(""));
             object.add("DISPLAY_NAME", itemBuilder.getDisplayName() != null ? new JsonPrimitive(itemBuilder.getDisplayName()) : new JsonPrimitive(""));
             object.add("GLOWING", new JsonPrimitive(itemBuilder.getGlowing()));
-            Type enchantType = new TypeToken<Map<Enchantment, Integer>>() {}.getType();
+            Type enchantType = new TypeToken<Map<String, Integer>>() {}.getType();
             Type listType = new TypeToken<List<String>>() {}.getType();
             Type flagType = new TypeToken<List<ItemFlag>>() {}.getType();
+            Map<String, Integer> enchantments = Maps.newHashMap();
+            itemBuilder.getCurrent().getEnchantments().forEach((e, l) -> enchantments.put(e.getName(), l));
             object.add("ENCHANTMENTS", new Gson().toJsonTree(itemBuilder.getCurrent().getEnchantments(), enchantType));
             object.add("LORE", new Gson().toJsonTree(itemBuilder.getLore(), listType));
             object.add("FLAGS", new Gson().toJsonTree(itemBuilder.getFlags(), flagType));
