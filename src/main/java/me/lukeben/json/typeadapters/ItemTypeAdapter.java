@@ -84,8 +84,6 @@ public class ItemTypeAdapter implements JsonSerializer<ItemBuilder>, JsonDeseria
             Map<String, Integer> enchantments = Maps.newHashMap();
             itemBuilder.getCurrent().getEnchantments().forEach((e, l) -> {
                 enchantments.put(e.getKey().getKey(), l);
-                System.out.println("key: " + e.getKey().getKey());
-                System.out.println("ns: " + e.getKey().getNamespace());
             });
             object.add("ENCHANTMENTS", new Gson().toJsonTree(enchantments, enchantType));
             object.add("LORE", new Gson().toJsonTree(itemBuilder.getLore(), listType));
