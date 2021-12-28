@@ -7,6 +7,7 @@ import me.lukeben.utils.ItemBuilder;
 import me.lukeben.utils.Methods;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import java.lang.reflect.Type;
@@ -56,7 +57,7 @@ public class ItemTypeAdapter implements JsonSerializer<ItemBuilder>, JsonDeseria
             }
 
             flags.forEach(f -> builder.flag(f));
-            enchantments.forEach((e, l) -> builder.addEnchantment(Enchantment.getByName(e), l));
+            enchantments.forEach((e, l) -> builder.addEnchantment(Enchantment.getByKey(NamespacedKey.fromString(e)), l));
 
             return builder.build();
         } catch (Exception ex) {
@@ -81,7 +82,7 @@ public class ItemTypeAdapter implements JsonSerializer<ItemBuilder>, JsonDeseria
             Type listType = new TypeToken<List<String>>() {}.getType();
             Type flagType = new TypeToken<List<ItemFlag>>() {}.getType();
             Map<String, Integer> enchantments = Maps.newHashMap();
-            itemBuilder.getCurrent().getEnchantments().forEach((e, l) -> enchantments.put(e.getName(), l));
+            itemBuilder.getCurrent().getEnchantments().forEach((e, l) -> enchantments.put(e.getKey().getNamespace(), l));
             object.add("ENCHANTMENTS", new Gson().toJsonTree(itemBuilder.getCurrent().getEnchantments(), enchantType));
             object.add("LORE", new Gson().toJsonTree(itemBuilder.getLore(), listType));
             object.add("FLAGS", new Gson().toJsonTree(itemBuilder.getFlags(), flagType));
