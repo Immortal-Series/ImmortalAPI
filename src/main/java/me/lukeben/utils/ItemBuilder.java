@@ -76,12 +76,8 @@ public class ItemBuilder {
             current.setItemMeta(meta);
             skullIdentifier(base64);
             return this;
-        }
-
-        public Builder addEnchantment(Enchantment enchantment, int level) {
-            current.addUnsafeEnchantment(enchantment, level);
-            return this;
         }*/
+
         public Builder addEnchantment(Enchantment enchantment, int level) {
             current.addUnsafeEnchantment(enchantment, level);
             return this;

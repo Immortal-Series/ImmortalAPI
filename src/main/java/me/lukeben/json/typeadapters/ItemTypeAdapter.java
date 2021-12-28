@@ -6,9 +6,12 @@ import me.lukeben.utils.ItemBuilder;
 import me.lukeben.utils.Methods;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.ItemFlag;
 
 import java.lang.reflect.Type;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 
 public class ItemTypeAdapter implements JsonSerializer<ItemBuilder>, JsonDeserializer<ItemBuilder> {
@@ -20,33 +23,40 @@ public class ItemTypeAdapter implements JsonSerializer<ItemBuilder>, JsonDeseria
         try {
             Material material = Material.valueOf(object.get("TYPE").getAsString());
 
-            int amount = object.has("AMOUNT") ? object.get("AMOUNT").getAsInt() : 1;
-            int data = object.has("DATA") ? object.get("DATA").getAsInt() : 0;
-            String skullIdentifier = object.has("SKULL_ID") ? object.get("SKULL_ID").getAsString() : null;
-            String displayName = object.has("DISPLAY_NAME") ? object.get("DISPLAY_NAME").getAsString() : null;
-            boolean glowing = object.has("GLOWING") ? object.get("GLOWING").getAsBoolean() : false;
+            int amount = object.get("AMOUNT").getAsInt();
+            int data = object.get("DATA").getAsInt();
+            String skullIdentifier = object.get("SKULL_ID").equals("") ? null : object.get("SKULL_ID").getAsString();
+            String displayName = object.get("DISPLAY_NAME").equals("") ? null : object.get("DISPLAY_NAME").getAsString();
+            boolean glowing = object.get("GLOWING").getAsBoolean();
+            Type enchantType = new TypeToken<Map<Enchantment, Integer>>() {}.getType();
             Type listType = new TypeToken<List<String>>() {}.getType();
-            List<String> lore = object.has("LORE") ? new Gson().fromJson(object.get("LORE"), listType) : null;
+            Type flagType = new TypeToken<List<ItemFlag>>() {}.getType();
+            List<String> lore = new Gson().fromJson(object.get("LORE"), listType);
+            Map<Enchantment, Integer> enchantments =  new Gson().fromJson(object.get("ENCHANTMENTS"), enchantType);
+            List<ItemFlag> flags = new Gson().fromJson(object.get("FLAGS"), flagType);
 
             ItemBuilder.Builder builder = ItemBuilder.builder();
 
             builder.item(material, amount, data);
 
-            if(skullIdentifier != null) {
+            if(!skullIdentifier.equals("")) {
                 builder.skull(Bukkit.getPlayer(skullIdentifier));
             }
 
-            if(displayName != null) {
+            if(!displayName.equals("")) {
                 builder.displayName(displayName);
             }
 
-            if(lore != null) {
+            if(!lore.isEmpty()) {
                 builder.lore(lore);
             }
 
             if(glowing) {
                 builder.setGlowing();
             }
+
+            flags.forEach(f -> builder.flag(f));
+            enchantments.forEach((e, l) -> builder.addEnchantment(e, l));
 
             return builder.build();
         } catch (Exception ex) {
@@ -62,12 +72,18 @@ public class ItemTypeAdapter implements JsonSerializer<ItemBuilder>, JsonDeseria
         JsonObject object = new JsonObject();
         try {
             object.add("TYPE", new JsonPrimitive(itemBuilder.getCurrent().getType().name()));
-            if(itemBuilder.getCurrent().getAmount() > 1) object.add("AMOUNT", new JsonPrimitive(itemBuilder.getCurrent().getAmount()));
-            if(itemBuilder.getCurrent().getDurability() > 0) object.add("DATA", new JsonPrimitive(itemBuilder.getCurrent().getDurability()));
-            if(itemBuilder.getSkullIdentifier() != null) object.add("SKULL_ID", new JsonPrimitive(itemBuilder.getSkullIdentifier()));
-            if(itemBuilder.getDisplayName() != null) object.add("DISPLAY_NAME", new JsonPrimitive(itemBuilder.getDisplayName()));
-            if(itemBuilder.getGlowing()) object.add("GLOWING", new JsonPrimitive(true));
+            object.add("AMOUNT", new JsonPrimitive(itemBuilder.getCurrent().getAmount()));
+            object.add("DATA", new JsonPrimitive(itemBuilder.getCurrent().getDurability()));
+            object.add("SKULL_ID", itemBuilder.getSkullIdentifier() != null ? new JsonPrimitive(itemBuilder.getSkullIdentifier()) : new JsonPrimitive(""));
+            object.add("DISPLAY_NAME", itemBuilder.getDisplayName() != null ? new JsonPrimitive(itemBuilder.getDisplayName()) : new JsonPrimitive(""));
+            object.add("GLOWING", new JsonPrimitive(itemBuilder.getGlowing()));
+            Type enchantType = new TypeToken<Map<Enchantment, Integer>>() {}.getType();
             Type listType = new TypeToken<List<String>>() {}.getType();
+            Type flagType = new TypeToken<List<ItemFlag>>() {}.getType();
+            object.add("ENCHANTMENTS", new Gson().toJsonTree(itemBuilder.getCurrent().getEnchantments(), enchantType));
+            object.add("LORE", new Gson().toJsonTree(itemBuilder.getLore(), listType));
+            object.add("FLAGS", new Gson().toJsonTree(itemBuilder.getFlags(), flagType));
+
             if(!itemBuilder.getLore().isEmpty()) object.add("LORE", new Gson().toJsonTree(itemBuilder.getLore(), listType));
             return object;
         } catch (Exception ex) {

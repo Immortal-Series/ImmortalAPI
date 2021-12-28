@@ -18,6 +18,7 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.List;
 import java.util.Map;
@@ -83,8 +84,35 @@ public class ConfigMenu extends Menu {
 
     private List<PagedItem> getPageItems(JsonElement jsonElement, String fileName) {
         List<PagedItem> items = Lists.newArrayList();
-        if(jsonElement.isJsonPrimitive()) return items;
-        JsonObject element = jsonElement.getAsJsonObject();
+
+        if(jsonElement.isJsonPrimitive()) {
+            return items;
+        } else if(jsonElement.isJsonArray()) {
+            JsonArray array = jsonElement.getAsJsonArray();
+            for(int i = 0; i < array.size(); i++) {
+                JsonElement el = array.get(i);
+                if(el.isJsonPrimitive()) {
+                    int finalI = i;
+                    ClickExecutor clickExecutor = event -> {
+                        ConvPrompt prompt = ConvPrompt.builder().promptText("&7Please type new value for 'variable' or type QUIT to quit!").build();
+                        ConversationAPI.build(getPlayer(), prompt, 10, "QUIT", e-> {});
+                        String response = prompt.getReceivedInput();
+                        JsonPrimitive prim = el.getAsJsonPrimitive();
+                        if(prim.isBoolean()) {
+                            array.set(finalI, new JsonPrimitive(Boolean.valueOf(response)));
+                        } else if(prim.isNumber()) {
+                            array.set(finalI, new JsonPrimitive(Double.parseDouble(response)));
+                        } else if(prim.isString()) {
+                            array.set(finalI, new JsonPrimitive(response));
+                        }
+                    };
+                    items.add(new PagedItem(ItemBuilder.builder().item(Material.PAPER, 1).displayName("&b" + elementEntry.getKey()).lore("&7Value: " + elementEntry.getValue().toString()).toItemStack(), clickExecutor));
+                } else if(el.isJsonObject()) {
+
+                }
+            }
+            
+        }
 
         for (Map.Entry<String, JsonElement> elementEntry : element.entrySet()) {
 
@@ -139,6 +167,25 @@ public class ConfigMenu extends Menu {
                 .enableComplexMapKeySerialization()
                 .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE);
         return builder;
+    }
+
+    public void serializeClass(Class clazz) {
+        try {
+            Field[] fields = clazz.getFields();
+            for(int i = 0; i < fields.length; i++) {
+                Field field = fields[i];
+                String name = field.getName();
+                if(field.getType().isPrimitive()) {
+                    System.out.println(name + " : " + field.get(clazz));
+                } else if(field.get(clazz) == null){
+                    System.out.println(name + " : NULL");
+                } else {
+                    serializeClass(field.getClass());
+                }
+            }
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
     }
 
 }
