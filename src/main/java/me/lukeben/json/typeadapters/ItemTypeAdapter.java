@@ -83,7 +83,7 @@ public class ItemTypeAdapter implements JsonSerializer<ItemBuilder>, JsonDeseria
             Type flagType = new TypeToken<List<ItemFlag>>() {}.getType();
             Map<String, Integer> enchantments = Maps.newHashMap();
             itemBuilder.getCurrent().getEnchantments().forEach((e, l) -> {
-                enchantments.put(e.getKey().getNamespace(), l);
+                enchantments.put(e.getKey().getKey(), l);
                 System.out.println("key: " + e.getKey().getKey());
                 System.out.println("ns: " + e.getKey().getNamespace());
             });
