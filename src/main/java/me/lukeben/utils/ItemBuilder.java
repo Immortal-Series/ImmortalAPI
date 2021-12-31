@@ -57,7 +57,7 @@ public class ItemBuilder {
             return this;
         }
 
-        public Builder skull(Player player) {
+        public Builder skullPlayer(Player player) {
             SkullMeta meta = (SkullMeta) current.getItemMeta();
             meta.setOwner(player.getName());
             current.setItemMeta(meta);
