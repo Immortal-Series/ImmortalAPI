@@ -1,5 +1,8 @@
 package me.lukeben.utils;
 
+import de.tr7zw.changeme.nbtapi.NBTCompound;
+import de.tr7zw.changeme.nbtapi.NBTItem;
+import de.tr7zw.changeme.nbtapi.NBTListCompound;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Singular;
@@ -61,22 +64,16 @@ public class ItemBuilder {
             return this;
         }
 
-        /*public Builder skull(String base64) {
-            SkullMeta meta = (SkullMeta) current.getItemMeta();
-            assert meta != null;
-            GameProfile profile = new GameProfile(UUID.randomUUID(), null);
-            profile.getProperties().put("textures", new Property("textures", base64));
-            try {
-                Field profileField = meta.getClass().getDeclaredField("profile");
-                profileField.setAccessible(true);
-                profileField.set(meta, profile);
-            } catch (NoSuchFieldException | IllegalAccessException e) {
-                e.printStackTrace();
-            }
-            current.setItemMeta(meta);
+        public Builder skull(String base64) {
+            NBTItem nbtItem = new NBTItem(current);
+            NBTCompound skull = nbtItem.addCompound("SkullOwner");
+            skull.setString("Id", UUID.randomUUID().toString());
+            NBTListCompound texture = skull.addCompound("Properties").getCompoundList("textures").addCompound();
+            texture.setString("Signature", "XpRfRz6/vXE6ip7/vq+40H6W70GFB0yjG6k8hG4pmFdnJFR+VQhslE0gXX/i0OAGThcAVSIT+/W1685wUxNofAiy+EhcxGNxNSJkYfOgXEVHTCuugpr+EQCUBI6muHDKms3PqY8ECxdbFTUEuWxdeiJsGt9VjHZMmUukkGhk0IobjQS3hjQ44FiT1tXuUU86oAxqjlKFpXG/iXtpcoXa33IObSI1S3gCKzVPOkMGlHZqRqKKElB54I2Qo4g5CJ+noudIDTzxPFwEEM6XrbM0YBi+SOdRvTbmrlkWF+ndzVWEINoEf++2hkO0gfeCqFqSMHuklMSgeNr/YtFZC5ShJRRv7zbyNF33jZ5DYNVR+KAK9iLO6prZhCVUkZxb1/BjOze6aN7kyN01u3nurKX6n3yQsoQQ0anDW6gNLKzO/mCvoCEvgecjaOQarktl/xYtD4YvdTTlnAlv2bfcXUtc++3UPIUbzf/jpf2g2wf6BGomzFteyPDu4USjBdpeWMBz9PxVzlVpDAtBYClFH/PFEQHMDtL5Q+VxUPu52XlzlUreMHpLT9EL92xwCAwVBBhrarQQWuLjAQXkp3oBdw6hlX6Fj0AafMJuGkFrYzcD7nNr61l9ErZmTWnqTxkJWZfZxmYBsFgV35SKc8rkRSHBNjcdKJZVN4GA+ZQH5B55mi4=");
+            texture.setString("Value", base64);
             skullIdentifier(base64);
             return this;
-        }*/
+        }
 
         public Builder addEnchantment(Enchantment enchantment, int level) {
             current.addUnsafeEnchantment(enchantment, level);
