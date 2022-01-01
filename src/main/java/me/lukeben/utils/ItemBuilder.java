@@ -68,7 +68,6 @@ public class ItemBuilder {
         }
 
         public Builder skull(String base64) {
-            SkullMeta menu = (SkullMeta) ItemBuilder.builder().toItemStack().getItemMeta();
             NBTItem nbtItem = new NBTItem(current);
             NBTCompound skull = nbtItem.addCompound("SkullOwner");
             int[] version = Arrays.stream(Bukkit.getBukkitVersion().substring(0, Bukkit.getBukkitVersion().indexOf("-")).split("\\.")).mapToInt(Integer::parseInt).toArray();
