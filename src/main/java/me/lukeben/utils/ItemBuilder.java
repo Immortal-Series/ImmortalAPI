@@ -92,6 +92,7 @@ public class ItemBuilder {
             }
             NBTListCompound texture = skull.addCompound("Properties").getCompoundList("textures").addCompound();
             texture.setString("Value", base64);
+            current(nbtItem.getItem());
             skullIdentifier(base64);
             return this;
         }
