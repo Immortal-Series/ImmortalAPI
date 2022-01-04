@@ -16,14 +16,23 @@ public class MenuListener implements Listener {
         final Player player = (Player) event.getWhoClicked();
         final Menu menu = Menu.getMenu(player);
 
+        System.out.println("DEBUGGING");
+
         if (event.getClickedInventory() == null || event.getCurrentItem() == null) return;
         if (menu == null) return;
 
+        System.out.println("DEBUGGING 2");
+
         event.setCancelled(true);
+
+        System.out.println("DEBUGGING");
 
         final int rawSlot = event.getRawSlot();
 
+        System.out.println("DEBUGGING");
+
         if (menu.executors.get(rawSlot) != null)
+            System.out.println("DEBUGGING 3");
             menu.executors.get(rawSlot).execute(event);
     }
 
