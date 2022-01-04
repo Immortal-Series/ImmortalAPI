@@ -31,9 +31,9 @@ public class SettingsMenu extends Menu {
     private final SettingsMenu parent;
 
     @Getter
-    private final Object config;
+    private final SimpleConfig config;
 
-    public SettingsMenu(Player player, Object config, SettingsMenu parent, Map<String, Object> settings, SettingsMenuType type) {
+    public SettingsMenu(Player player, SimpleConfig config, SettingsMenu parent, Map<String, Object> settings, SettingsMenuType type) {
         super(player, "&e&lSettings", 4);
         this.settings = settings;
         this.type = type;
@@ -227,7 +227,7 @@ public class SettingsMenu extends Menu {
         setItem(31, ItemBuilder.builder().item(Material.COMPASS).displayName("&e&lClick to Save!").lore("&7Click to save file!").toItemStack(), e -> {
             Map<String, Object> hierarchy = getHierarchy(this);
             Accessor.get(config.getClass()).copy(hierarchy, this);
-            ((SimpleConfig) config).save();
+            config.save();
         });
     }
 
