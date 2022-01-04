@@ -45,6 +45,7 @@ public class SettingsMenu extends Menu {
 
     public void buildMenu() {
         System.out.println(getHierarchy(this));
+        setSaveIcon();
         switch (type) {
             case NORMAL:
                 for (String key : settings.keySet()) {
