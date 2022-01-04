@@ -41,6 +41,7 @@ public class SettingsMenu extends Menu {
         this.config = config;
         buildMenu();
         displayMenu();
+        System.out.println(getExecutors());
     }
 
     public void buildMenu() {
