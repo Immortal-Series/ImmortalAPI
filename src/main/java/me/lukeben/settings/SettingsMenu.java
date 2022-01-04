@@ -44,15 +44,19 @@ public class SettingsMenu extends Menu {
     }
 
     public void buildMenu() {
-        System.out.println(getHierarchy(this));
+        System.out.println("debug(1)");
         setSaveIcon();
         switch (type) {
             case NORMAL:
+                System.out.println("debug(2)");
                 for (String key : settings.keySet()) {
+                    System.out.println("debug(3)");
                     Object value = settings.get(key);
                     //is a primitive = a variable
                     if (value.getClass().isPrimitive() || value instanceof String) {
+                        System.out.println("debug(4)");
                         setItem(getFirstSlot(), ItemBuilder.builder().item(Material.PAPER).displayName("&6" + key).lore("&eCurrent: &7" + value).toItemStack(), e -> {
+                            System.out.println("debug(5)");
                             e.setCancelled(true);
                             getPlayer().closeInventory();
                             System.out.println(getPlayer().getOpenInventory().getTopInventory() == null);
