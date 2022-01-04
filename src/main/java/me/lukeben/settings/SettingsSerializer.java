@@ -17,6 +17,7 @@ import org.bukkit.World;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 public class SettingsSerializer {
@@ -30,6 +31,11 @@ public class SettingsSerializer {
     public HashMap<String, Object> serialize(Object config) {
         Type mapType = new TypeToken<HashMap<String, Object>>() {}.getType();
         return gson.fromJson(gson.toJson(config), mapType);
+    }
+
+    public String deserialize(Map<String, Object> hierarchy) {
+        Type mapType = new TypeToken<HashMap<String, Object>>() {}.getType();
+        return gson.toJson(hierarchy, mapType);
     }
 
     private GsonBuilder getGson() {

@@ -7,6 +7,7 @@ import me.lukeben.ImmortalAPI;
 import me.lukeben.coversationbuilder.ConvPrompt;
 import me.lukeben.coversationbuilder.ConversationAPI;
 import me.lukeben.json.Accessor;
+import me.lukeben.json.DiskUtil;
 import me.lukeben.json.SimpleConfig;
 import me.lukeben.menubuilder.Menu;
 import me.lukeben.utils.ItemBuilder;
@@ -227,7 +228,7 @@ public class SettingsMenu extends Menu {
         setItem(31, ItemBuilder.builder().item(Material.COMPASS).displayName("&e&lClick to Save!").lore("&7Click to save file!").toItemStack(), e -> {
             Map<String, Object> hierarchy = getHierarchy(this);
             Accessor.get(config.getClass()).copy(hierarchy, this);
-            config.save();
+            DiskUtil.write(config.getFile(), SettingsSerializer.getInstance().deserialize(hierarchy));
         });
     }
 
