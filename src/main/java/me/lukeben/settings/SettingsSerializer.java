@@ -27,7 +27,7 @@ public class SettingsSerializer {
     @Getter
     public final Gson gson = getGson().create();
 
-    public HashMap<String, Object> serialize(SimpleConfig config) {
+    public HashMap<String, Object> serialize(Class<? extends SimpleConfig> config) {
         Type mapType = new TypeToken<HashMap<String, Object>>() {}.getType();
         return gson.fromJson(gson.toJson(config), mapType);
     }
