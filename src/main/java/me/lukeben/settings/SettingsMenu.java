@@ -66,9 +66,10 @@ public class SettingsMenu extends Menu {
                                 } else {
                                     settings.put(key, answer.getReceivedInput());
                                 }
-                                new SettingsMenu(getPlayer(), config, parent, settings, SettingsMenuType.MAP);
                             }).build();
-                            ConversationAPI.build(getPlayer(), prompt, 10, "QUIT");
+                            ConversationAPI.build(getPlayer(), prompt, 10, "QUIT", qs -> {
+                                new SettingsMenu(getPlayer(), config, parent, settings, SettingsMenuType.MAP);
+                            });
                         });
                         //its a collection, list, or set
                     } else if (Collection.class.isAssignableFrom(value.getClass())) {
