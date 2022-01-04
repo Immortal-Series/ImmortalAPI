@@ -68,7 +68,7 @@ public class SettingsMenu extends Menu {
                                 }
                             }).build();
                             ConversationAPI.build(getPlayer(), prompt, 10, "QUIT", qs -> {
-                                new SettingsMenu(getPlayer(), config, parent, settings, SettingsMenuType.MAP);
+                                new SettingsMenu(getPlayer(), config, parent, settings, SettingsMenuType.NORMAL);
                             });
                         });
                         //its a collection, list, or set
