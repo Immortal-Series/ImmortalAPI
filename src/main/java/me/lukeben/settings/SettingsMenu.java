@@ -227,8 +227,8 @@ public class SettingsMenu extends Menu {
     public void setSaveIcon() {
         setItem(31, ItemBuilder.builder().item(Material.COMPASS).displayName("&e&lClick to Save!").lore("&7Click to save file!").toItemStack(), e -> {
             Map<String, Object> hierarchy = getHierarchy(this);
-            Accessor.get(config.getClass()).copy(hierarchy, config.getClass());
             DiskUtil.write(config.getFile(), SettingsSerializer.getInstance().deserialize(hierarchy));
+            config.load(new HashMap<>());
         });
     }
 
