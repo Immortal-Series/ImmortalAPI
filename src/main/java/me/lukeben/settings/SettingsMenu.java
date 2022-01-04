@@ -53,6 +53,7 @@ public class SettingsMenu extends Menu {
                     //is a primitive = a variable
                     if (value.getClass().isPrimitive() || value instanceof String) {
                         setItem(getFirstSlot(), ItemBuilder.builder().item(Material.PAPER).displayName("&6" + key).lore("&eCurrent: &7" + value).toItemStack(), e -> {
+                            e.setCancelled(true);
                             getPlayer().closeInventory();
                             System.out.println(getPlayer().getOpenInventory().getTopInventory() == null);
                             ConvPrompt prompt = ConvPrompt.builder().promptText("&7Please enter a new value for &e" + key + " &7or type 'QUIT' to cancel!").answer(answer -> {
@@ -116,6 +117,7 @@ public class SettingsMenu extends Menu {
                 for (Object o : collection) {
                     if (o.getClass().isPrimitive() || o instanceof String) {
                         setItem(getFirstSlot(), ItemBuilder.builder().item(Material.PAPER).displayName("&7" + o.toString()).toItemStack(), e -> {
+                            e.setCancelled(true);
                             getPlayer().closeInventory();
                             ConvPrompt prompt = ConvPrompt.builder().promptText("&7Please enter a new value for &e" + arrayId + " &7or type 'QUIT' to cancel!").build();
                             ConversationAPI.build(getPlayer(), prompt, 10, "QUIT");
