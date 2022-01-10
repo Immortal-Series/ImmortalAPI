@@ -27,7 +27,7 @@ public abstract class Hook {
         return Bukkit.getPluginManager().isPluginEnabled(name);
     }
 
-    public Plugin getPlugin() {
+    public Plugin getSource() {
         return Bukkit.getPluginManager().getPlugin(name);
     }
 
