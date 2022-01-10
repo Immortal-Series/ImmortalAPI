@@ -12,12 +12,41 @@ import org.bukkit.inventory.meta.FireworkMeta;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @UtilityClass
 public class Methods {
 
-    public String color(String text) {
-        return ChatColor.translateAlternateColorCodes('&', text);
+    public static String color(String message) {
+        final Pattern hexPattern = Pattern.compile("#<([A-Fa-f0-9]){6}>");
+        if (getMinorVersion() >= 16) {
+            Matcher matcher = hexPattern.matcher(message);
+            while (matcher.find()) {
+                String hexString = matcher.group();
+                hexString = "#" + hexString.substring(2, hexString.length() - 1);
+                final net.md_5.bungee.api.ChatColor hex = net.md_5.bungee.api.ChatColor.of(hexString);
+                final String before = message.substring(0, matcher.start());
+                final String after = message.substring(matcher.end());
+                message = before + hex + after;
+                matcher = hexPattern.matcher(message);
+            }
+        }
+
+        return net.md_5.bungee.api.ChatColor.translateAlternateColorCodes('&', message);
+    }
+
+    public boolean isLegacy() {
+        String[] split = Bukkit.getBukkitVersion().split("-")[0].split("\\.");
+        String majorVer = split[0]; //For 1.10 will be "1"
+        String minorVer = split[1]; //For 1.10 will be "10"
+        return !(Integer.parseInt(majorVer) > 1) && (Integer.parseInt(minorVer) <= 8);
+    }
+
+    public int getMinorVersion() {
+        String[] split = Bukkit.getBukkitVersion().split("-")[0].split("\\.");
+        String minorVer = split[1];
+        return Integer.parseInt(minorVer);
     }
 
     public List<String> colorAndConvert(List<String> oldLore) {
