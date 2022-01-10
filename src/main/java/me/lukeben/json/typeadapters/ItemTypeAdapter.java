@@ -21,7 +21,7 @@ public class ItemTypeAdapter implements JsonSerializer<ItemBuilder>, JsonDeseria
         String[] split = Bukkit.getBukkitVersion().split("-")[0].split("\\.");
         String majorVer = split[0]; //For 1.10 will be "1"
         String minorVer = split[1]; //For 1.10 will be "10"
-        return !(Integer.parseInt(majorVer) > 1) || (Integer.parseInt(minorVer) <= 8);
+        return !(Integer.parseInt(majorVer) > 1) && (Integer.parseInt(minorVer) <= 8);
     }
 
 
