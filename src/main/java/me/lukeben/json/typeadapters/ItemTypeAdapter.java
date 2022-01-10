@@ -17,6 +17,13 @@ import java.util.logging.Level;
 
 public class ItemTypeAdapter implements JsonSerializer<ItemBuilder>, JsonDeserializer<ItemBuilder> {
 
+    public boolean useLegacy() {
+        String[] split = Bukkit.getBukkitVersion().split("-")[0].split("\\.");
+        String majorVer = split[0]; //For 1.10 will be "1"
+        String minorVer = split[1]; //For 1.10 will be "10"
+        return (Integer.parseInt(majorVer) > 1) || (Integer.parseInt(minorVer) > 8);
+    }
+
 
     @Override
     public ItemBuilder deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
@@ -61,7 +68,11 @@ public class ItemTypeAdapter implements JsonSerializer<ItemBuilder>, JsonDeseria
             }
 
             flags.forEach(f -> builder.flag(f));
-            enchantments.forEach((e, l) -> builder.addEnchantment(Enchantment.getByKey(NamespacedKey.minecraft(e)), l));
+            if(useLegacy()) {
+                enchantments.forEach((e, l) -> builder.addEnchantment(Enchantment.getByName(e), l));
+            } else {
+                enchantments.forEach((e, l) -> builder.addEnchantment(Enchantment.getByKey(NamespacedKey.minecraft(e)), l));
+            }
 
             return builder.build();
         } catch (Exception ex) {
@@ -83,12 +94,19 @@ public class ItemTypeAdapter implements JsonSerializer<ItemBuilder>, JsonDeseria
             object.add("DISPLAY_NAME", itemBuilder.getDisplayName() != null ? new JsonPrimitive(itemBuilder.getDisplayName()) : new JsonPrimitive(""));
             object.add("GLOWING", new JsonPrimitive(itemBuilder.getGlowing()));
             Type enchantType = new TypeToken<Map<String, Integer>>() {}.getType();
+            Map<String, Integer> enchantments = Maps.newHashMap();
+            if(useLegacy()) {
+                itemBuilder.getCurrent().getEnchantments().forEach((e, l) -> {
+                    enchantments.put(e.getName(), l);
+                });
+            } else {
+                itemBuilder.getCurrent().getEnchantments().forEach((e, l) -> {
+                    enchantments.put(e.getKey().getKey(), l);
+                });
+            }
+
             Type listType = new TypeToken<List<String>>() {}.getType();
             Type flagType = new TypeToken<List<ItemFlag>>() {}.getType();
-            Map<String, Integer> enchantments = Maps.newHashMap();
-            itemBuilder.getCurrent().getEnchantments().forEach((e, l) -> {
-                enchantments.put(e.getKey().getKey(), l);
-            });
             object.add("ENCHANTMENTS", new Gson().toJsonTree(enchantments, enchantType));
             object.add("LORE", new Gson().toJsonTree(itemBuilder.getLore(), listType));
             object.add("FLAGS", new Gson().toJsonTree(itemBuilder.getFlags(), flagType));
