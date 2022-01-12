@@ -1,8 +1,10 @@
 package me.lukeben.hooks;
 
+import lombok.AllArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 
+@AllArgsConstructor
 public abstract class Hook {
 
     public String name = "";
