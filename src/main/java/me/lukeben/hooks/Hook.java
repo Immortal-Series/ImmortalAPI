@@ -1,16 +1,12 @@
 package me.lukeben.hooks;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 
-@AllArgsConstructor
-@Data
 public abstract class Hook {
 
-    public String name;
-    public boolean enabled;
+    public String name = "";
+    public boolean enabled = false;
 
     public void registerHook() {
         HookManager.getInstance().getHooks().add(this);
