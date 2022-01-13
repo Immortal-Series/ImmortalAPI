@@ -72,20 +72,7 @@ public class ItemBuilder {
             NBTCompound skull = nbtItem.addCompound("SkullOwner");
             UUID randomUUID = UUID.randomUUID();
             if (Methods.getMinorVersion() >= 16) {
-                StringBuilder result = new StringBuilder();
-                long msb = randomUUID.getMostSignificantBits();
-                long lsb = randomUUID.getLeastSignificantBits();
-                String uuidString = result.append("[I;")
-                        .append(msb >> 32)
-                        .append(',')
-                        .append(msb & Integer.MAX_VALUE)
-                        .append(',')
-                        .append(lsb >> 32)
-                        .append(',')
-                        .append(lsb & Integer.MAX_VALUE)
-                        .append(']')
-                        .toString();
-                skull.setString("Id", uuidString);
+                skull.setUUID("Id", randomUUID);
             } else {
                 skull.setString("Id", randomUUID.toString());
             }
