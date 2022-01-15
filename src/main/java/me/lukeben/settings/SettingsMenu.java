@@ -24,7 +24,6 @@ public class SettingsMenu extends Menu {
     @Getter
     private final Map<String, Object> settings;
 
-
     @Getter
     private final SettingsMenuType type;
 
@@ -34,19 +33,40 @@ public class SettingsMenu extends Menu {
     @Getter
     private final SimpleConfig config;
 
-    public SettingsMenu(Player player, SimpleConfig config, SettingsMenu parent, Map<String, Object> settings, SettingsMenuType type) {
+    @Getter
+    private int page;
+
+    public SettingsMenu(Player player, SimpleConfig config, SettingsMenu parent, Map<String, Object> settings, SettingsMenuType type, int page) {
         super(player, "&e&lSettings", 4);
-        this.settings = settings;
+        this.settings = getPagedItems(settings);
         this.type = type;
         this.parent = parent;
         this.config = config;
+        this.page = page;
         buildMenu();
         displayMenu();
-        System.out.println(getExecutors());
+    }
+
+    public HashMap<String, Object> getPagedItems(Map<String, Object> map) {
+        HashMap<String, Object> returned = Maps.newHashMap();
+        int amountPerPage = itemSlots.size();
+        int maxNumber = amountPerPage * page;
+
+        for (int current = maxNumber - amountPerPage; current< maxNumber; current++) {
+            //checking if there is enough tags to fully fill that page.
+            if (settings.size() <= current) break;
+
+            List<String> keySet = Lists.newArrayList(map.keySet());
+            String identifier = keySet.get(current);
+            returned.put(identifier, map.get(identifier));
+        }
+        return returned;
     }
 
     public void buildMenu() {
         setSaveIcon();
+        setPageButtons();
+
         switch (type) {
             case NORMAL:
                 for (String key : settings.keySet()) {
@@ -69,7 +89,7 @@ public class SettingsMenu extends Menu {
                                 }
                             }).build();
                             ConversationAPI.build(getPlayer(), prompt, 10, "QUIT", qs -> {
-                                new SettingsMenu(getPlayer(), config, parent, settings, SettingsMenuType.NORMAL);
+                                new SettingsMenu(getPlayer(), config, parent, settings, SettingsMenuType.NORMAL, 0);
                             });
                         });
                         //its a collection, list, or set
@@ -78,7 +98,7 @@ public class SettingsMenu extends Menu {
                         HashMap<String, Object> newValues = Maps.newHashMap();
                         newValues.put(key, values);
                         setItem(getFirstSlot(), ItemBuilder.builder().item(Material.BOOK).displayName("&6" + key + " &7(List)").lore("&eSize: &7" + values.size()).toItemStack(), e -> {
-                            SettingsMenu settingsMenu = new SettingsMenu(getPlayer(), config,this, newValues, SettingsMenuType.ARRAY);
+                            SettingsMenu settingsMenu = new SettingsMenu(getPlayer(), config,this, newValues, SettingsMenuType.ARRAY,0);
                         });
                     } else {
                         Material type = Material.BOOK;
@@ -94,7 +114,7 @@ public class SettingsMenu extends Menu {
                         Map<String, Object> newValues = Maps.newHashMap();
                         newValues.put(key, value);
                         setItem(getFirstSlot(), ItemBuilder.builder().item(type).displayName("&6" + key).lore("&eSize: &7" + values.size()).toItemStack(), e -> {
-                            SettingsMenu settingsMenu = new SettingsMenu(getPlayer(), config,this, newValues, SettingsMenuType.MAP);
+                            SettingsMenu settingsMenu = new SettingsMenu(getPlayer(), config,this, newValues, SettingsMenuType.MAP, 0);
                         });
                     }
                 }
@@ -134,14 +154,14 @@ public class SettingsMenu extends Menu {
                                 collection.add(promptResponse);
                             }
                             settings.put(arrayId, collection);
-                            new SettingsMenu(getPlayer(), config, parent, settings, SettingsMenuType.ARRAY);
+                            new SettingsMenu(getPlayer(), config, parent, settings, SettingsMenuType.ARRAY, 0);
                         });
                     } else {
                         Map<Object, Object> values = (Map<Object, Object>) o;
                         Map<String, Object> newValues = Maps.newHashMap();
                         newValues.put(o.toString(), values);
                         setItem(getFirstSlot(), ItemBuilder.builder().item(Material.BOOK).displayName("&6" + o.toString()).lore("&eSize: &7" + values.size()).toItemStack(), e -> {
-                            SettingsMenu settingsMenu = new SettingsMenu(getPlayer(), config, this, newValues, SettingsMenuType.MAP);
+                            SettingsMenu settingsMenu = new SettingsMenu(getPlayer(), config, this, newValues, SettingsMenuType.MAP, 0);
                         });
                     }
                 }
@@ -159,7 +179,7 @@ public class SettingsMenu extends Menu {
                                 System.out.println(getPlayer().getOpenInventory().getTopInventory() == null);
                                 ConvPrompt prompt = ConvPrompt.builder().promptText("&7Please enter a new value for &elevel &7or type 'QUIT' to cancel!").answer(answer -> {
                                     settings.put("sharpness", Integer.parseInt(answer.getReceivedInput()));
-                                    new SettingsMenu(getPlayer(), config, parent, settings, SettingsMenuType.MAP);
+                                    new SettingsMenu(getPlayer(), config, parent, settings, SettingsMenuType.MAP, 0);
                                 }).build();
                                 ConversationAPI.build(getPlayer(), prompt, 10, "QUIT");
                             });
@@ -190,7 +210,7 @@ public class SettingsMenu extends Menu {
                                     map.put(key.toString(), answer.getReceivedInput());
                                 }
                                 settings.put(id, map);
-                                new SettingsMenu(getPlayer(), config, parent, settings, SettingsMenuType.MAP);
+                                new SettingsMenu(getPlayer(), config, parent, settings, SettingsMenuType.MAP, 0);
                             }).build();
                             ConversationAPI.build(getPlayer(), prompt, 10, "QUIT");
                         });
@@ -199,7 +219,7 @@ public class SettingsMenu extends Menu {
                         HashMap<String, Object> newValues = Maps.newHashMap();
                         newValues.put(key.toString(), values);
                         setItem(getFirstSlot(), ItemBuilder.builder().item(Material.BOOK).displayName("&6" + key + " &7(List)").lore("&eSize: &7" + values.size()).toItemStack(), e -> {
-                            new SettingsMenu(getPlayer(), config,this, newValues, SettingsMenuType.ARRAY);
+                            new SettingsMenu(getPlayer(), config,this, newValues, SettingsMenuType.ARRAY, 0);
                         });
                     } else {
                         Material type = Material.BOOK;
@@ -215,7 +235,7 @@ public class SettingsMenu extends Menu {
                         Map<String, Object> newValues = Maps.newHashMap();
                         newValues.put(key.toString(), value);
                         setItem(getFirstSlot(), ItemBuilder.builder().item(type).displayName("&6" + key).lore("&eSize: &7" + values.size()).toItemStack(), e -> {
-                            new SettingsMenu(getPlayer(), config,this, newValues, SettingsMenuType.MAP);
+                            new SettingsMenu(getPlayer(), config,this, newValues, SettingsMenuType.MAP, 0);
                         });
 
                     }
@@ -229,6 +249,34 @@ public class SettingsMenu extends Menu {
             Map<String, Object> hierarchy = getHierarchy(this);
             DiskUtil.write(config.getFile(), SettingsSerializer.getInstance().deserialize(hierarchy));
             config.load(new HashMap<>());
+        });
+    }
+
+    public void setPageButtons() {
+        setItem(35, ItemBuilder.builder()
+                .item(Material.PAPER)
+                .displayName("&a&lNext Page >>")
+                .lore("&7Click to advance to the next page.").toItemStack(), event -> {
+
+            int maxNumber = itemSlots.size() * page;
+            //basically checking if there is enough tags to warrant another page...
+            if(maxNumber < settings.size()) {
+                page++;
+                buildMenu();
+                displayMenu();
+            }
+        });
+        setItem(27, ItemBuilder.builder()
+                .item(Material.PAPER)
+                .displayName("&c&l<< Previous Page")
+                .lore("&7Click to return to the previous page.")
+                .toItemStack(), event -> {
+            //So, theoretically they should always be able to go back, unless they are on the first page;
+            if(page > 1) {
+                page--;
+                buildMenu();
+                displayMenu();
+            }
         });
     }
 
