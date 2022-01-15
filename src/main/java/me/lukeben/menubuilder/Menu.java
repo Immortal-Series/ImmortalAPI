@@ -116,9 +116,9 @@ public abstract class Menu {
     }
 
     public void refresh() {
+        inventory.clear();
         for (final Map.Entry<Integer, ItemStack> entry : this.items.entrySet())
             getInventory().setItem(entry.getKey(), entry.getValue());
-
         register();
         update();
     }

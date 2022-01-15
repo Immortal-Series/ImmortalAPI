@@ -33,7 +33,6 @@ public class SettingsMenu extends Menu {
     @Getter
     private final SimpleConfig config;
 
-    @Getter
     private int page = 1;
 
     public SettingsMenu(Player player, SimpleConfig config, SettingsMenu parent, Map<String, Object> settings, SettingsMenuType type) {
@@ -263,8 +262,12 @@ public class SettingsMenu extends Menu {
             //basically checking if there is enough tags to warrant another page...
             if(maxNumber < settings.size()) {
                 page++;
+                for(int slot : itemSlots) {
+                    if(getItems().containsKey(slot)) getItems().remove(slot);
+                    if(getExecutors().containsKey(slot)) getExecutors().remove(slot);
+                }
                 buildMenu();
-                displayMenu();
+                refresh();
             }
         });
         setItem(27, ItemBuilder.builder()
@@ -275,8 +278,12 @@ public class SettingsMenu extends Menu {
             //So, theoretically they should always be able to go back, unless they are on the first page;
             if(page > 1) {
                 page--;
+                for(int slot : itemSlots) {
+                    if(getItems().containsKey(slot)) getItems().remove(slot);
+                    if(getExecutors().containsKey(slot)) getExecutors().remove(slot);
+                }
                 buildMenu();
-                displayMenu();
+                refresh();
             }
         });
     }
