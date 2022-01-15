@@ -11,15 +11,17 @@ import me.lukeben.json.DiskUtil;
 import me.lukeben.json.SimpleConfig;
 import me.lukeben.menubuilder.Menu;
 import me.lukeben.utils.ItemBuilder;
+import me.lukeben.utils.versionsupport.IMaterial;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
 
 public class SettingsMenu extends Menu {
 
-    private final List<Integer> itemSlots = Lists.newArrayList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17);
+    private final List<Integer> itemSlots = Lists.newArrayList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26);
 
     @Getter
     private final Map<String, Object> settings;
@@ -46,11 +48,9 @@ public class SettingsMenu extends Menu {
     }
 
     public HashMap<String, Object> getPagedItems(Map<String, Object> map) {
-        System.out.println(page);
         HashMap<String, Object> returned = Maps.newHashMap();
         int amountPerPage = itemSlots.size(); //18
         int maxNumber = amountPerPage * page; //18 x 1 = 18
-        System.out.println(maxNumber);
         List<String> keySet = Lists.newArrayList(map.keySet());
 
         // current => 18 - 18 = 0; current
@@ -242,6 +242,13 @@ public class SettingsMenu extends Menu {
                 }
                 break;
         }
+        ItemStack filler = IMaterial.WHITE_STAINED_GLASS_PANE.getBuilder().displayName(" ").toItemStack();
+        setItem(28, filler);
+        setItem(29, filler);
+        setItem(30, filler);
+        setItem(31, filler);
+        setItem(32, filler);
+        setItem(33, filler);
     }
 
     public void setSaveIcon() {
@@ -254,7 +261,7 @@ public class SettingsMenu extends Menu {
 
     public void setPageButtons() {
         setItem(35, ItemBuilder.builder()
-                .item(Material.PAPER)
+                .item(Material.ARROW)
                 .displayName("&a&lNext Page >>")
                 .lore("&7Click to advance to the next page.").toItemStack(), event -> {
 
@@ -271,7 +278,7 @@ public class SettingsMenu extends Menu {
             }
         });
         setItem(27, ItemBuilder.builder()
-                .item(Material.PAPER)
+                .item(Material.ARROW)
                 .displayName("&c&l<< Previous Page")
                 .lore("&7Click to return to the previous page.")
                 .toItemStack(), event -> {
