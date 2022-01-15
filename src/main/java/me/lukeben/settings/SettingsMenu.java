@@ -42,7 +42,7 @@ public class SettingsMenu extends Menu {
         this.type = type;
         this.parent = parent;
         this.config = config;
-        this.page = page;
+        this.page = page - 1;
         buildMenu();
         displayMenu();
     }
