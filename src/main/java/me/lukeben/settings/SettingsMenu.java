@@ -34,15 +34,14 @@ public class SettingsMenu extends Menu {
     private final SimpleConfig config;
 
     @Getter
-    private int page;
+    private int page = 1;
 
-    public SettingsMenu(Player player, SimpleConfig config, SettingsMenu parent, Map<String, Object> settings, SettingsMenuType type, int page) {
+    public SettingsMenu(Player player, SimpleConfig config, SettingsMenu parent, Map<String, Object> settings, SettingsMenuType type) {
         super(player, "&e&lSettings", 4);
         this.settings = getPagedItems(settings);
         this.type = type;
         this.parent = parent;
         this.config = config;
-        this.page = page;
         buildMenu();
         displayMenu();
     }
@@ -91,7 +90,7 @@ public class SettingsMenu extends Menu {
                                 }
                             }).build();
                             ConversationAPI.build(getPlayer(), prompt, 10, "QUIT", qs -> {
-                                new SettingsMenu(getPlayer(), config, parent, settings, SettingsMenuType.NORMAL, 1);
+                                new SettingsMenu(getPlayer(), config, parent, settings, SettingsMenuType.NORMAL);
                             });
                         });
                         //its a collection, list, or set
@@ -100,7 +99,7 @@ public class SettingsMenu extends Menu {
                         HashMap<String, Object> newValues = Maps.newHashMap();
                         newValues.put(key, values);
                         setItem(getFirstSlot(), ItemBuilder.builder().item(Material.BOOK).displayName("&6" + key + " &7(List)").lore("&eSize: &7" + values.size()).toItemStack(), e -> {
-                            SettingsMenu settingsMenu = new SettingsMenu(getPlayer(), config,this, newValues, SettingsMenuType.ARRAY,1);
+                            SettingsMenu settingsMenu = new SettingsMenu(getPlayer(), config,this, newValues, SettingsMenuType.ARRAY);
                         });
                     } else {
                         Material type = Material.BOOK;
@@ -116,7 +115,7 @@ public class SettingsMenu extends Menu {
                         Map<String, Object> newValues = Maps.newHashMap();
                         newValues.put(key, value);
                         setItem(getFirstSlot(), ItemBuilder.builder().item(type).displayName("&6" + key).lore("&eSize: &7" + values.size()).toItemStack(), e -> {
-                            SettingsMenu settingsMenu = new SettingsMenu(getPlayer(), config,this, newValues, SettingsMenuType.MAP, 1);
+                            SettingsMenu settingsMenu = new SettingsMenu(getPlayer(), config,this, newValues, SettingsMenuType.MAP);
                         });
                     }
                 }
@@ -156,14 +155,14 @@ public class SettingsMenu extends Menu {
                                 collection.add(promptResponse);
                             }
                             settings.put(arrayId, collection);
-                            new SettingsMenu(getPlayer(), config, parent, settings, SettingsMenuType.ARRAY, 1);
+                            new SettingsMenu(getPlayer(), config, parent, settings, SettingsMenuType.ARRAY);
                         });
                     } else {
                         Map<Object, Object> values = (Map<Object, Object>) o;
                         Map<String, Object> newValues = Maps.newHashMap();
                         newValues.put(o.toString(), values);
                         setItem(getFirstSlot(), ItemBuilder.builder().item(Material.BOOK).displayName("&6" + o.toString()).lore("&eSize: &7" + values.size()).toItemStack(), e -> {
-                            SettingsMenu settingsMenu = new SettingsMenu(getPlayer(), config, this, newValues, SettingsMenuType.MAP, 1);
+                            SettingsMenu settingsMenu = new SettingsMenu(getPlayer(), config, this, newValues, SettingsMenuType.MAP);
                         });
                     }
                 }
@@ -181,7 +180,7 @@ public class SettingsMenu extends Menu {
                                 System.out.println(getPlayer().getOpenInventory().getTopInventory() == null);
                                 ConvPrompt prompt = ConvPrompt.builder().promptText("&7Please enter a new value for &elevel &7or type 'QUIT' to cancel!").answer(answer -> {
                                     settings.put("sharpness", Integer.parseInt(answer.getReceivedInput()));
-                                    new SettingsMenu(getPlayer(), config, parent, settings, SettingsMenuType.MAP, 1);
+                                    new SettingsMenu(getPlayer(), config, parent, settings, SettingsMenuType.MAP);
                                 }).build();
                                 ConversationAPI.build(getPlayer(), prompt, 10, "QUIT");
                             });
@@ -211,7 +210,7 @@ public class SettingsMenu extends Menu {
                                     map.put(key.toString(), answer.getReceivedInput());
                                 }
                                 settings.put(id, map);
-                                new SettingsMenu(getPlayer(), config, parent, settings, SettingsMenuType.MAP, 1);
+                                new SettingsMenu(getPlayer(), config, parent, settings, SettingsMenuType.MAP);
                             }).build();
                             ConversationAPI.build(getPlayer(), prompt, 10, "QUIT");
                         });
@@ -220,7 +219,7 @@ public class SettingsMenu extends Menu {
                         HashMap<String, Object> newValues = Maps.newHashMap();
                         newValues.put(key.toString(), values);
                         setItem(getFirstSlot(), ItemBuilder.builder().item(Material.BOOK).displayName("&6" + key + " &7(List)").lore("&eSize: &7" + values.size()).toItemStack(), e -> {
-                            new SettingsMenu(getPlayer(), config,this, newValues, SettingsMenuType.ARRAY, 1);
+                            new SettingsMenu(getPlayer(), config,this, newValues, SettingsMenuType.ARRAY);
                         });
                     } else {
                         Material type = Material.BOOK;
@@ -236,7 +235,7 @@ public class SettingsMenu extends Menu {
                         Map<String, Object> newValues = Maps.newHashMap();
                         newValues.put(key.toString(), value);
                         setItem(getFirstSlot(), ItemBuilder.builder().item(type).displayName("&6" + key).lore("&eSize: &7" + values.size()).toItemStack(), e -> {
-                            new SettingsMenu(getPlayer(), config,this, newValues, SettingsMenuType.MAP, 1);
+                            new SettingsMenu(getPlayer(), config,this, newValues, SettingsMenuType.MAP);
                         });
 
                     }
