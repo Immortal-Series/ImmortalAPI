@@ -48,11 +48,14 @@ public class SettingsMenu extends Menu {
     }
 
     public HashMap<String, Object> getPagedItems(Map<String, Object> map) {
+        System.out.println(page);
         HashMap<String, Object> returned = Maps.newHashMap();
-        int amountPerPage = itemSlots.size();
-        int maxNumber = amountPerPage * page;
+        int amountPerPage = itemSlots.size(); //18
+        int maxNumber = amountPerPage * page; //18 x 1 = 18
+        System.out.println(maxNumber);
         List<String> keySet = Lists.newArrayList(map.keySet());
 
+        // current => 18 - 18 = 0; current
         for (int current = maxNumber - amountPerPage; current< maxNumber; current++) {
             //checking if there is enough tags to fully fill that page.
             if (map.size() <= current) break;
@@ -76,7 +79,6 @@ public class SettingsMenu extends Menu {
                         setItem(getFirstSlot(), ItemBuilder.builder().item(Material.PAPER).displayName("&6" + key).lore("&eCurrent: &7" + value).toItemStack(), e -> {
                             e.setCancelled(true);
                             getPlayer().closeInventory();
-                            System.out.println(getPlayer().getOpenInventory().getTopInventory() == null);
                             ConvPrompt prompt = ConvPrompt.builder().promptText("&7Please enter a new value for &e" + key + " &7or type 'QUIT' to cancel!").answer(answer -> {
                                 if (value instanceof Integer) {
                                     settings.put(key, Integer.parseInt(answer.getReceivedInput()));
@@ -196,7 +198,6 @@ public class SettingsMenu extends Menu {
                                 @Override
                                 public void run() {
                                     getPlayer().closeInventory();
-                                    System.out.println(getPlayer().getOpenInventory().getTopInventory() == null);
                                 }
                             }.runTaskLater(ImmortalAPI.getInstance().getPlugin(), 1);
                             ConvPrompt prompt = ConvPrompt.builder().promptText("&7Please enter a new value for &e" + key + " &7or type 'QUIT' to cancel!").answer(answer -> {
