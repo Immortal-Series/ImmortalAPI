@@ -51,12 +51,12 @@ public class SettingsMenu extends Menu {
         HashMap<String, Object> returned = Maps.newHashMap();
         int amountPerPage = itemSlots.size();
         int maxNumber = amountPerPage * page;
+        List<String> keySet = Lists.newArrayList(map.keySet());
 
         for (int current = maxNumber - amountPerPage; current< maxNumber; current++) {
             //checking if there is enough tags to fully fill that page.
-            if (settings.size() <= current) break;
+            if (map.size() <= current) break;
 
-            List<String> keySet = Lists.newArrayList(map.keySet());
             String identifier = keySet.get(current);
             returned.put(identifier, map.get(identifier));
         }
