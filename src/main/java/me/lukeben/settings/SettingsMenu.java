@@ -38,7 +38,7 @@ public class SettingsMenu extends Menu {
 
     public SettingsMenu(Player player, SimpleConfig config, SettingsMenu parent, Map<String, Object> settings, SettingsMenuType type) {
         super(player, "&e&lSettings", 4);
-        this.settings = getPagedItems(settings);
+        this.settings = settings;
         this.type = type;
         this.parent = parent;
         this.config = config;
@@ -71,8 +71,9 @@ public class SettingsMenu extends Menu {
 
         switch (type) {
             case NORMAL:
-                for (String key : settings.keySet()) {
-                    Object value = settings.get(key);
+                HashMap<String, Object> pagedSettings = getPagedItems(settings);
+                for (String key : pagedSettings.keySet()) {
+                    Object value = pagedSettings.get(key);
                     //is a primitive = a variable
                     if (value.getClass().isPrimitive() || value instanceof String) {
                         setItem(getFirstSlot(), ItemBuilder.builder().item(Material.PAPER).displayName("&6" + key).lore("&eCurrent: &7" + value).toItemStack(), e -> {
