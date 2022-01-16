@@ -28,7 +28,11 @@ public enum ISound {
         Optional<SoundBuilder.Builder> sound = PARSED_CACHE.containsKey(this) ? PARSED_CACHE.get(this) : null;
         if(sound != null) return sound.orElse(null);
         SoundBuilder.Builder builder = SoundBuilder.builder();
-        if(useLegacy()) builder.sound(Sound.valueOf(legacySound));
+        if(useLegacy()) {
+            builder.sound(Sound.valueOf(legacySound));
+        } else {
+            builder.sound(Sound.valueOf(this.name()));
+        }
         PARSED_CACHE.put(this, Optional.ofNullable(builder));
         return builder;
     }
