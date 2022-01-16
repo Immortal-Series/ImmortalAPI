@@ -118,8 +118,14 @@ public class Methods {
         return value;
     }
 
-    public void sendMessage(Player player, String text) {
-        player.sendMessage(Methods.color(text));
+    public boolean isPrimOrWrapper(Object type) {
+        type = type.getClass();
+        if (type == Double.class || type == Float.class || type == Long.class ||
+                type == Integer.class || type == Short.class || type == Character.class ||
+                type == Byte.class || type == Boolean.class || type.getClass().isPrimitive()) {
+            return true;
+        }
+        return false;
     }
 
 }

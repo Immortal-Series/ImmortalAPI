@@ -11,7 +11,9 @@ import me.lukeben.json.DiskUtil;
 import me.lukeben.json.SimpleConfig;
 import me.lukeben.menubuilder.Menu;
 import me.lukeben.utils.ItemBuilder;
+import me.lukeben.utils.Methods;
 import me.lukeben.utils.versionsupport.IMaterial;
+import org.apache.commons.lang.ClassUtils;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -74,7 +76,7 @@ public class SettingsMenu extends Menu {
                 for (String key : pagedSettings.keySet()) {
                     Object value = pagedSettings.get(key);
                     //is a primitive = a variable
-                    if (value.getClass().isPrimitive() || value instanceof String) {
+                    if (Methods.isPrimOrWrapper(value) || value instanceof String) {
                         setItem(getFirstSlot(), ItemBuilder.builder().item(Material.PAPER).displayName("&6" + key).lore("&eCurrent: &7" + value).toItemStack(), e -> {
                             e.setCancelled(true);
                             getPlayer().closeInventory();
@@ -177,7 +179,6 @@ public class SettingsMenu extends Menu {
                             map.put("sharpness", 1);
                             setItem(getFirstSlot(), ItemBuilder.builder().item(Material.PAPER).displayName("&6sharpness").lore("&eCurrent: &71").toItemStack(), ev -> {
                                 getPlayer().closeInventory();
-                                System.out.println(getPlayer().getOpenInventory().getTopInventory() == null);
                                 ConvPrompt prompt = ConvPrompt.builder().promptText("&7Please enter a new value for &elevel &7or type 'QUIT' to cancel!").answer(answer -> {
                                     settings.put("sharpness", Integer.parseInt(answer.getReceivedInput()));
                                     new SettingsMenu(getPlayer(), config, parent, settings, SettingsMenuType.MAP);
@@ -191,7 +192,7 @@ public class SettingsMenu extends Menu {
                 for (Object key : map.keySet()) {
                     Object value = map.get(key);
                     //is a primitive = a variable
-                    if (value.getClass().isPrimitive() || value instanceof String) {
+                    if (Methods.isPrimOrWrapper(value) || value instanceof String) {
                         setItem(getFirstSlot(), ItemBuilder.builder().item(Material.PAPER).displayName("&6" + key).lore("&eCurrent: &7" + value).toItemStack(), e -> {
                             new BukkitRunnable() {
                                 @Override
