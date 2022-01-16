@@ -148,7 +148,7 @@ public class SettingsMenu extends Menu {
                     });
                 }
                 for (Object o : collection) {
-                    if (o.getClass().isPrimitive() || o instanceof String) {
+                    if (Methods.isPrimOrWrapper(o) || o instanceof String) {
                         setItem(getFirstSlot(), ItemBuilder.builder().item(Material.PAPER).displayName("&7" + o.toString()).toItemStack(), e -> {
                             e.setCancelled(true);
                             getPlayer().closeInventory();
