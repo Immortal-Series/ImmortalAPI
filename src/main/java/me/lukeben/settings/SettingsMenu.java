@@ -67,6 +67,14 @@ public class SettingsMenu extends Menu {
     }
 
     public void buildMenu() {
+        ItemStack filler = IMaterial.WHITE_STAINED_GLASS_PANE.getBuilder().displayName(" ").toItemStack();
+        setItem(28, filler);
+        setItem(29, filler);
+        setItem(30, filler);
+        setItem(31, filler);
+        setItem(32, filler);
+        setItem(33, filler);
+        setItem(34, filler);
         setSaveIcon();
         setPageButtons();
 
@@ -243,13 +251,6 @@ public class SettingsMenu extends Menu {
                 }
                 break;
         }
-        ItemStack filler = IMaterial.WHITE_STAINED_GLASS_PANE.getBuilder().displayName(" ").toItemStack();
-        setItem(28, filler);
-        setItem(29, filler);
-        setItem(30, filler);
-        setItem(31, filler);
-        setItem(32, filler);
-        setItem(33, filler);
     }
 
     public void setSaveIcon() {

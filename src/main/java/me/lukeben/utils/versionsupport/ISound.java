@@ -1,7 +1,7 @@
 package me.lukeben.utils.versionsupport;
 
+import me.lukeben.utils.Methods;
 import me.lukeben.utils.SoundBuilder;
-import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 
 import java.util.HashMap;
@@ -21,10 +21,7 @@ public enum ISound {
     }
 
     public boolean useLegacy() {
-        String[] split = Bukkit.getBukkitVersion().split("-")[0].split("\\.");
-        String majorVer = split[0]; //For 1.10 will be "1"
-        String minorVer = split[1]; //For 1.10 will be "10"
-        return !(Integer.parseInt(majorVer) > 1) && (Integer.parseInt(minorVer) <= 8);
+        return Methods.getMinorVersion() <= 8;
     }
 
     public SoundBuilder.Builder getBuilder() {
