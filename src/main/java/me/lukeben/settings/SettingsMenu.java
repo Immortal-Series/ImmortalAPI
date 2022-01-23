@@ -125,7 +125,7 @@ public class SettingsMenu extends Menu {
                     } else {
                         Map<Object, Object> values = (Map<Object, Object>) value;
                         ItemBuilder icon = ItemBuilder.builder().item(Material.BOOK).displayName("&6" + key).lore("&eSize: &7" + values.size()).build();
-                        if (key.toString().toUpperCase().endsWith("_LOCATION")) {
+                        if (key.toString().toUpperCase().endsWith("LOCATION")) {
                             icon = ItemBuilder.builder().item(Material.ENDER_PEARL)
                                     .displayName("&6" + key)
                                     .lore("&7")
@@ -137,7 +137,7 @@ public class SettingsMenu extends Menu {
                                     .lore("&3&l* &bPitch: &7" + values.get("PITCH"))
                                     .lore("&7")
                                     .build();
-                        } else if (key.toString().toUpperCase().endsWith("_ITEM")) {
+                        } else if (key.toString().toUpperCase().endsWith("ITEM")) {
                             ItemBuilder item = (ItemBuilder) SettingsSerializer.getInstance().toObject(values, ItemBuilder.class);
                             icon = ItemBuilder.builder().item(Material.valueOf(values.get("TYPE").toString()))
                                     .displayName("&6" + key)
@@ -148,7 +148,7 @@ public class SettingsMenu extends Menu {
                                     .lore("&3&l* &bData: &7" + item.getCurrent().getDurability())
                                     .lore("&7")
                                     .build();
-                        } else if(key.toString().endsWith("_SOUND")) {
+                        } else if(key.toString().endsWith("SOUND")) {
                             SoundBuilder builder = (SoundBuilder) SettingsSerializer.getInstance().toObject(values, SoundBuilder.class);
                             icon = ItemBuilder.builder().item(Material.NOTE_BLOCK)
                                     .displayName("&6" + key)
@@ -278,7 +278,7 @@ public class SettingsMenu extends Menu {
                         } else {
                             Map<Object, Object> values = (Map<Object, Object>) value;
                             ItemBuilder icon = ItemBuilder.builder().item(Material.BOOK).displayName("&6" + key).lore("&eSize: &7" + values.size()).build();
-                            if (key.toString().toUpperCase().endsWith("_LOCATION")) {
+                            if (key.toString().toUpperCase().endsWith("LOCATION")) {
                                 icon = ItemBuilder.builder().item(Material.ENDER_PEARL)
                                         .displayName("&6" + key)
                                         .lore("&7")
@@ -290,7 +290,7 @@ public class SettingsMenu extends Menu {
                                         .lore("&3&l* &bPitch: &7" + values.get("PITCH"))
                                         .lore("&7")
                                         .build();
-                            } else if (key.toString().toUpperCase().endsWith("_ITEM")) {
+                            } else if (key.toString().toUpperCase().endsWith("ITEM")) {
                                 ItemBuilder item = (ItemBuilder) SettingsSerializer.getInstance().toObject(values, ItemBuilder.class);
                                 icon = ItemBuilder.builder().item(Material.valueOf(values.get("TYPE").toString()))
                                         .displayName("&6" + key)
@@ -301,7 +301,7 @@ public class SettingsMenu extends Menu {
                                         .lore("&3&l* &bData: &7" + item.getCurrent().getDurability())
                                         .lore("&7")
                                         .build();
-                            } else if(key.toString().endsWith("_SOUND")) {
+                            } else if(key.toString().endsWith("SOUND")) {
                                 SoundBuilder builder = (SoundBuilder) SettingsSerializer.getInstance().toObject(values, SoundBuilder.class);
                                 icon = ItemBuilder.builder().item(Material.NOTE_BLOCK)
                                         .displayName("&6" + key)
@@ -370,7 +370,7 @@ public class SettingsMenu extends Menu {
                         } else {
                             Map<Object, Object> values = (Map<Object, Object>) value;
                             ItemBuilder icon = ItemBuilder.builder().item(Material.BOOK).displayName("&6" + key).lore("&eSize: &7" + values.size()).build();
-                            if (key.toString().toUpperCase().endsWith("_LOCATION")) {
+                            if (key.toString().toUpperCase().endsWith("LOCATION")) {
                                 icon = ItemBuilder.builder().item(Material.ENDER_PEARL)
                                         .displayName("&6" + key)
                                         .lore("&7")
@@ -382,7 +382,7 @@ public class SettingsMenu extends Menu {
                                         .lore("&3&l* &bPitch: &7" + values.get("PITCH"))
                                         .lore("&7")
                                         .build();
-                            } else if (key.toString().toUpperCase().endsWith("_ITEM")) {
+                            } else if (key.toString().toUpperCase().endsWith("ITEM")) {
                                 ItemBuilder item = (ItemBuilder) SettingsSerializer.getInstance().toObject(values, ItemBuilder.class);
                                 icon = ItemBuilder.builder().item(Material.valueOf(values.get("TYPE").toString()))
                                         .displayName("&6" + key)
@@ -393,7 +393,7 @@ public class SettingsMenu extends Menu {
                                         .lore("&3&l* &bData: &7" + item.getCurrent().getDurability())
                                         .lore("&7")
                                         .build();
-                            } else if(key.toString().endsWith("_SOUND")) {
+                            } else if(key.toString().endsWith("SOUND")) {
                                 SoundBuilder builder = (SoundBuilder) SettingsSerializer.getInstance().toObject(values, SoundBuilder.class);
                                 icon = ItemBuilder.builder().item(Material.NOTE_BLOCK)
                                         .displayName("&6" + key)
