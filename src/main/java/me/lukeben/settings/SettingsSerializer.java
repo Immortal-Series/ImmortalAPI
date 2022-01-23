@@ -5,7 +5,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import lombok.Getter;
-import me.lukeben.json.SimpleConfig;
 import me.lukeben.json.typeadapters.ItemTypeAdapter;
 import me.lukeben.json.typeadapters.LocationTypeAdapter;
 import me.lukeben.json.typeadapters.UUIDTypeAdapter;
@@ -36,6 +35,12 @@ public class SettingsSerializer {
     public String deserialize(Map<String, Object> hierarchy) {
         Type mapType = new TypeToken<HashMap<String, Object>>() {}.getType();
         return gson.toJson(hierarchy, mapType);
+    }
+
+    public Object toObject(Map hierarchy, Class clazz) {
+        String json =  deserialize(hierarchy);
+        Object o = gson.fromJson(json, clazz);
+        return o;
     }
 
     private GsonBuilder getGson() {

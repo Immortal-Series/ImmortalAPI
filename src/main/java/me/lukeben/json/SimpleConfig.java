@@ -100,5 +100,43 @@ public class SimpleConfig {
         return new File(ImmortalAPI.getInstance().getPlugin().getDataFolder(), fileName + ".json");
     }
 
+    /*
+
+    SubCategory -> Return back to main new SubCategoryValue?
+
+
+
+    Hierarchy hi = ...
+
+    hi.displayMenu()
+    hi.getParent()
+    hi.getChildren()
+
+    save() {
+
+        hi2 - > parent -> h1 -> 
+
+    }
+
+    @Data
+    public abstract class CustomType {
+
+
+
+        Config
+          - String
+          - SubCategory(1)
+              - item
+              - float
+          - SubCategory(2)
+              - double
+              - SubCategory(A)
+
+    }
+
+
+
+     */
+
 }
 
