@@ -4,7 +4,6 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import lombok.Getter;
 import me.lukeben.ImmortalAPI;
-import me.lukeben.MenuFiller;
 import me.lukeben.coversationbuilder.ConvPrompt;
 import me.lukeben.coversationbuilder.ConversationAPI;
 import me.lukeben.json.Accessor;
@@ -12,6 +11,7 @@ import me.lukeben.json.DiskUtil;
 import me.lukeben.json.SimpleConfig;
 import me.lukeben.menubuilder.Menu;
 import me.lukeben.utils.ItemBuilder;
+import me.lukeben.utils.MenuFiller;
 import me.lukeben.utils.Methods;
 import me.lukeben.utils.SoundBuilder;
 import me.lukeben.utils.versionsupport.IMaterial;
@@ -168,7 +168,7 @@ public class SettingsMenu extends Menu {
                 List<Object> collection = (List<Object>) new ArrayList(settings.values()).get(0);
                 setPageButtons(collection.size());
                 if(SettingsManager.getInstance().arrayHasDefaultObject(identifier)) {
-                    setItem(18, ItemBuilder.builder().item(Material.BOOK_AND_QUILL).displayName("&aNEW &8[&a+&8]").lore("&7Click to add a new object to this list").toItemStack(), e -> {
+                    setItem(18, IMaterial.WRITABLE_BOOK.getBuilder().displayName("&aNEW &8[&a+&8]").lore("&7Click to add a new object to this list").toItemStack(), e -> {
                         collection.add(SettingsManager.getInstance().getDefaultObject(identifier));
                         settings.put(identifier, collection);
                         new SettingsMenu(getPlayer(), config, configClass,  parent, settings, SettingsMenuType.ARRAY, page, identifier);
@@ -213,7 +213,7 @@ public class SettingsMenu extends Menu {
                 Map<String, Object> map = settings;
                 setPageButtons(map.size());
                 if(SettingsManager.getInstance().arrayHasDefaultObject(identifier + "**")) {
-                    setItem(18, ItemBuilder.builder().item(Material.BOOK_AND_QUILL).displayName("&aNEW &8[&a+&8]").lore("&7Click to add a new object to this list").toItemStack(), e -> { ;
+                    setItem(18, IMaterial.WRITABLE_BOOK.getBuilder().displayName("&aNEW &8[&a+&8]").lore("&7Click to add a new object to this list").toItemStack(), e -> { ;
                         Map<String, Object> addingMap = (Map<String, Object>) SettingsManager.getInstance().getDefaultObject(identifier + "**");
                         System.out.println(addingMap);
                         System.out.println(SettingsSerializer.getInstance().gson.toJson(map));

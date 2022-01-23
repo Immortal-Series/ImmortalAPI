@@ -9,6 +9,7 @@ import java.util.Optional;
 
 public enum IMaterial {
 
+    WRITABLE_BOOK(0, "BOOK_AND_QUILL"),
     PLAYER_HEAD(3, "SKULL_ITEM"),
     RED_WOOL(14, "WOOL"),
     ORANGE_WOOL(1, "WOOL"),
