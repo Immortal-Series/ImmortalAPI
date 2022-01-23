@@ -141,6 +141,7 @@ public class SettingsMenu extends Menu {
                             ItemBuilder item = (ItemBuilder) SettingsSerializer.getInstance().toObject(values, ItemBuilder.class);
                             icon = ItemBuilder.builder().item(Material.valueOf(values.get("TYPE").toString()))
                                     .displayName("&6" + key)
+                                    .skull(item.getSkullIdentifier())
                                     .lore("&7")
                                     .lore("&3&l* &bType: &7" + item.getCurrent().getType())
                                     .lore("&3&l* &bAmount: &7" + item.getCurrent().getAmount())
@@ -293,6 +294,7 @@ public class SettingsMenu extends Menu {
                                 ItemBuilder item = (ItemBuilder) SettingsSerializer.getInstance().toObject(values, ItemBuilder.class);
                                 icon = ItemBuilder.builder().item(Material.valueOf(values.get("TYPE").toString()))
                                         .displayName("&6" + key)
+                                        .skull(item.getSkullIdentifier())
                                         .lore("&7")
                                         .lore("&3&l* &bType: &7" + item.getCurrent().getType())
                                         .lore("&3&l* &bAmount: &7" + item.getCurrent().getAmount())
@@ -384,6 +386,7 @@ public class SettingsMenu extends Menu {
                                 ItemBuilder item = (ItemBuilder) SettingsSerializer.getInstance().toObject(values, ItemBuilder.class);
                                 icon = ItemBuilder.builder().item(Material.valueOf(values.get("TYPE").toString()))
                                         .displayName("&6" + key)
+                                        .skull(item.getSkullIdentifier())
                                         .lore("&7")
                                         .lore("&3&l* &bType: &7" + item.getCurrent().getType())
                                         .lore("&3&l* &bAmount: &7" + item.getCurrent().getAmount())
