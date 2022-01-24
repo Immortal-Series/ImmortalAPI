@@ -24,8 +24,8 @@ public abstract class PersistentFile {
 
     private static List<PersistentFile> files = new ArrayList<>();
 
-    private HashMap<Class, TypeAdapter> typeAdapters = Maps.newHashMap();
-    protected PersistentFile(HashMap<Class, TypeAdapter> adapters) {
+    private HashMap<Class, Object> typeAdapters = Maps.newHashMap();
+    protected PersistentFile(HashMap<Class, Object> adapters) {
         files.add(this);
         typeAdapters.putAll(adapters);
     }
