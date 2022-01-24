@@ -93,7 +93,7 @@ public class SettingsMenu extends Menu {
     }
 
     public void buildMenu() {
-        menuFiller.getSlots().forEach(slot -> setItem(slot, menuFiller.getFiller().toItemStack()));
+        menuFiller.getSlots().forEach(slot -> setItem(slot, menuFiller.getFillerItem().toItemStack()));
         setSaveIcon();
         if(parent == null) setItem(40, ItemBuilder.builder().item(Material.BARRIER).displayName("&c&lClick to close").lore("&7Click to display").toItemStack(), e -> getPlayer().closeInventory());
         if(parent != null) setBackButton();

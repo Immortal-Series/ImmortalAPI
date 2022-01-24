@@ -9,7 +9,7 @@ import java.util.List;
 public class MenuFiller {
 
     private final List<Integer> slots;
-    private final ItemBuilder filler_item;
+    private final ItemBuilder fillerItem;
 
     public MenuFiller(List<Object> slots, ItemBuilder filler) {
         this.slots = getSlotArray(slots);
