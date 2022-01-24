@@ -13,7 +13,7 @@ public class MenuFiller {
 
     public MenuFiller(List<Object> slots, ItemBuilder filler) {
         this.slots = getSlotArray(slots);
-        this.filler_item = filler;
+        this.fillerItem = filler;
     }
 
     public List<Integer> getSlotArray(List<Object> list) {
