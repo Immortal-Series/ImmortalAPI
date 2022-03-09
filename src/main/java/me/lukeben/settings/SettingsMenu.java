@@ -290,6 +290,7 @@ public class SettingsMenu extends Menu {
                                         .lore("&3&l* &bPitch: &7" + values.get("PITCH"))
                                         .lore("&7")
                                         .build();
+                                
                             } else if (key.toString().toUpperCase().endsWith("ITEM")) {
                                 ItemBuilder item = (ItemBuilder) SettingsSerializer.getInstance().toObject(values, ItemBuilder.class);
                                 icon = ItemBuilder.builder().item(Material.valueOf(values.get("TYPE").toString()))

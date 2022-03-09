@@ -30,13 +30,16 @@ public class MenuListener implements Listener {
 
     @EventHandler
     public void onInventoryClose(final InventoryCloseEvent event) {
+        System.out.println("fired!1");
         final Player player = (Player) event.getPlayer();
 
         final Menu menu = Menu.getMenu(player);
 
         if (menu == null) return;
+        System.out.println("fired!2");
 
         if (menu.getCloseExecutor() != null) {
+            System.out.println("fired!3");
             menu.getCloseExecutor().execute(event);
             return;
         }

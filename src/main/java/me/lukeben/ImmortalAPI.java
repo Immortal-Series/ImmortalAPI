@@ -22,7 +22,7 @@ public class ImmortalAPI {
         this.plugin = plugin;
         Bukkit.getPluginManager().registerEvents(new MenuListener(), plugin);
         HookManager.getInstance().getHooks().forEach(hook -> {
-            if(hook.isAvailable() && hook.isAvailable()) hook.onEnable();
+            if(hook.isAvailable()) hook.onEnable();
         });
         SettingsManager.getInstance().addEditableArray("LORE*", "This is an example lore line");
         SettingsManager.getInstance().addEditableArray("FLAGS*", "HIDE_ENCHANTS");
