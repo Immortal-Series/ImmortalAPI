@@ -29,6 +29,7 @@ public class ItemBuilder {
     private Boolean glowing = false;
     @Singular("flag") private List<ItemFlag> flags;
     @Singular("lore") private List<String> lore;
+    //test
 
     public static class Builder {
 
