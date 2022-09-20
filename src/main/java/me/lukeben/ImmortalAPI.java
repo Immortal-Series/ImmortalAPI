@@ -9,6 +9,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class ImmortalAPI {
 
+
     @Getter @Setter
     private JavaPlugin plugin;
 
