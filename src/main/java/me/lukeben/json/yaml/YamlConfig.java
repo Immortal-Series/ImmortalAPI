@@ -1,12 +1,13 @@
-package me.lukeben.json;
+package me.lukeben.json.yaml;
 
-import com.google.common.collect.Maps;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.TypeAdapter;
+import com.google.gson.reflect.TypeToken;
 import lombok.Getter;
 import me.lukeben.ImmortalAPI;
+import me.lukeben.json.Accessor;
+import me.lukeben.json.DiskUtil;
 import me.lukeben.json.typeadapters.ItemTypeAdapter;
 import me.lukeben.json.typeadapters.LocationTypeAdapter;
 import me.lukeben.json.typeadapters.UUIDTypeAdapter;
@@ -14,25 +15,31 @@ import me.lukeben.json.typeadapters.WorldTypeAdapter;
 import me.lukeben.utils.ItemBuilder;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Modifier;
-import java.util.HashMap;
+import java.lang.reflect.Type;
+import java.util.Map;
 import java.util.UUID;
 
 @Getter
-public class SimpleConfig {
+public abstract class YamlConfig {
 
     private transient Gson gson = getGson().create();
 
     protected transient File file;
+    protected transient FileConfiguration fileConfiguration;
 
-    public SimpleConfig(final File file) {
+    public YamlConfig(final File file) {
         this.file = file;
     }
 
-    public SimpleConfig(final String configName) {
-        this(getFile(configName));
+    public YamlConfig(final String configName) {
+        this.file = (getFile(configName));
     }
 
     private GsonBuilder getGson() {
@@ -50,6 +57,29 @@ public class SimpleConfig {
         return builder;
     }
 
+    private static File getFile(String fileName) {
+        return new File(ImmortalAPI.getInstance().getPlugin().getDataFolder(), fileName + ".yml");
+    }
+
+    public void load() {
+
+        // detect if the current file exists, if not then create it and register the defaults.
+        if(!(file.exists())) {
+            try {
+                // file is created
+                file.createNewFile();
+                // defaults must be loaded to the file
+
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        fileConfiguration = YamlConfiguration.loadConfiguration(file);
+        loadDefaults();
+
+    }
+
     protected static boolean contentRequestsDefaults(final String content) {
         if (content == null) return false;
         if (content.length() == 0) return false;
@@ -57,16 +87,10 @@ public class SimpleConfig {
         return c == 'd' || c == 'D';
     }
 
-    public void load(HashMap<Class, Object> typeAdapters) {
-        GsonBuilder builder = getGson();
-        for(Class cl : typeAdapters.keySet()) {
-            builder.registerTypeAdapter(cl, typeAdapters.get(cl));
-        }
-        gson = builder.create();
+    public void loadDefaults() {
         if (this.getFile().isFile()) {
-            String content = DiskUtil.read(this.getFile());
+            String content = convertToJson(DiskUtil.read(this.getFile()));
             content = content.trim();
-
             Object toShallowLoad = null;
 
             if (contentRequestsDefaults(content)) {
@@ -87,57 +111,41 @@ public class SimpleConfig {
     }
 
     public void save() {
-        String content = DiskUtil.read(this.getFile());
+        String content = convertToJson(DiskUtil.read(this.getFile()));
         if (contentRequestsDefaults(content)) return;
+
         content = this.gson.toJson(this);
-        DiskUtil.write(this.getFile(), content);
+        Type serializedDataType = new TypeToken<Map<String, Object>>() {}.getType();
+        Map<String, Object> serializedData = gson.fromJson(content, serializedDataType);
+        setSavedData(serializedData);
+
+        try {
+            fileConfiguration.save(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    public String getCopy() {
-        return this.gson.toJson(this);
-    }
+    public void setSavedData(Map<String, Object> data) {
 
-    private static File getFile(String fileName) {
-        return new File(ImmortalAPI.getInstance().getPlugin().getDataFolder(), fileName + ".json");
-    }
+        for(String key : data.keySet()) {
+            Object value = data.get(key);
 
-    /*
+            fileConfiguration.set(key, value);
 
-    SubCategory -> Return back to main new SubCategoryValue?
+        }
 
-
-
-    Hierarchy hi = ...
-
-    hi.displayMenu()
-    hi.getParent()
-    hi.getChildren()
-
-    save() {
-
-        hi2 - > parent -> h1 -> 
 
     }
 
-    @Data
-    public abstract class CustomType {
+    private String convertToJson(String yamlString) {
+        Yaml yaml= new Yaml();
+        Map<String,Object> map= (Map<String, Object>) yaml.load(yamlString);
 
-
-
-        Config
-          - String
-          - SubCategory(1)
-              - item
-              - float
-          - SubCategory(2)
-              - double
-              - SubCategory(A)
-
+        //convert to gson
+        Type serializedDataType = new TypeToken<Map<String, Object>>() {}.getType();
+        String gsonString = gson.toJson(map, serializedDataType);
+        return gsonString;
     }
-
-
-
-     */
 
 }
-
