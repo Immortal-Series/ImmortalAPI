@@ -20,6 +20,7 @@ public final class ImmortalHelp {
         this.sender = sender;
         this.command = command;
         this.subCommands = subCommands;
+
         this.page = page;
     }
 
