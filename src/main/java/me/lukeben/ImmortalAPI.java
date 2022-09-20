@@ -13,6 +13,8 @@ public class ImmortalAPI {
     @Getter @Setter
     private JavaPlugin plugin;
 
+    //this is a test method.
+
     @Getter
     private static transient final ImmortalAPI instance = new ImmortalAPI();
 
