@@ -15,6 +15,7 @@ public class ImmortalAPI {
 
     //this is a test method.
 
+
     @Getter
     private static transient final ImmortalAPI instance = new ImmortalAPI();
 
