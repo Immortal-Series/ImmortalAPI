@@ -15,7 +15,7 @@ jobs:
       # ...
       - name: "Build & test"
         run: |
-          ./gradlew build
+          gradle build
           echo "done!"
 
       - uses: "marvinpinto/action-automatic-releases@latest"
