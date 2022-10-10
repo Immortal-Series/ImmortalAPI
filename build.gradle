@@ -25,7 +25,8 @@ repositories {
 dependencies {
     implementation 'de.tr7zw:item-nbt-api-plugin:2.10.0'
     compileOnly 'org.spigotmc:spigot-api:1.19.2-R0.1-SNAPSHOT'
-    compileOnly 'org.projectlombok:lombok:1.18.20'
+    compileOnly 'org.projectlombok:lombok:1.18.8'
+    annotationProcessor 'org.projectlombok:lombok:1.18.8'
 }
 
 group = 'me.lukeben'
