@@ -34,9 +34,6 @@ public abstract class ImmortalCommand extends Command implements ImmortalCommand
     @Setter
     protected boolean handleArgsInMain = false;
 
-    @Getter
-    private final List<String> aliases = Lists.newArrayList();
-
     /**
      * The command sender is either the console or the player.
      * <p>
@@ -66,8 +63,6 @@ public abstract class ImmortalCommand extends Command implements ImmortalCommand
     protected ImmortalCommand(final String name) {
         super(name);
         subCommands = Lists.newArrayList();
-        this.setAliases(aliases);
-
     }
 
     // --------------------------------------------------
@@ -288,6 +283,8 @@ public abstract class ImmortalCommand extends Command implements ImmortalCommand
 
             final CommandMap commandMap = (CommandMap) commandMapField.get(Bukkit.getServer());
             commandMap.register(getLabel(), this);
+            System.out.println(this.getAliases());
+            System.out.println(commandMap.getCommand(getLabel()).getAliases());
         } catch (final Exception e) {
             e.printStackTrace();
         }
