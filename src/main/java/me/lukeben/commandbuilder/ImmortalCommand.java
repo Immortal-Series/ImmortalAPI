@@ -8,11 +8,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandMap;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.PluginCommand;
 import org.bukkit.entity.Player;
 
 import java.lang.reflect.Field;
-import java.util.Arrays;
 import java.util.List;
 
 public abstract class ImmortalCommand extends Command implements ImmortalCommandExecutor {
@@ -36,7 +34,7 @@ public abstract class ImmortalCommand extends Command implements ImmortalCommand
     @Setter
     protected boolean handleArgsInMain = false;
 
-    @Getter @Setter
+    @Getter
     private final List<String> aliases = Lists.newArrayList();
 
     /**
@@ -69,6 +67,7 @@ public abstract class ImmortalCommand extends Command implements ImmortalCommand
         super(name);
         subCommands = Lists.newArrayList();
         this.setAliases(aliases);
+
     }
 
     // --------------------------------------------------
@@ -287,18 +286,8 @@ public abstract class ImmortalCommand extends Command implements ImmortalCommand
             final Field commandMapField = Bukkit.getServer().getClass().getDeclaredField("commandMap");
             commandMapField.setAccessible(true);
 
-            Command instanceCommand = this;
-            List<String> currentAliases = instanceCommand.getAliases();
-
-            for(String alias : aliases) {
-                currentAliases.add(alias);
-            }
-
-            instanceCommand.setAliases(currentAliases);
-
             final CommandMap commandMap = (CommandMap) commandMapField.get(Bukkit.getServer());
-            commandMap.registerAll(getLabel(), currentAliases);
-
+            commandMap.register(getLabel(), this);
         } catch (final Exception e) {
             e.printStackTrace();
         }
