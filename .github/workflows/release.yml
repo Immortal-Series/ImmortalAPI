@@ -35,4 +35,4 @@ jobs:
           prerelease: true
           title: "Latest Release"
           files: |
-            ImmortalAPI.jar
+            *.jar
