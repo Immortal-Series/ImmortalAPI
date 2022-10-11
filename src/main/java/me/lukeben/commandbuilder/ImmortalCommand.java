@@ -37,7 +37,7 @@ public abstract class ImmortalCommand extends Command implements ImmortalCommand
     protected boolean handleArgsInMain = false;
 
     @Getter @Setter
-    private final List<String> aliases = Lists.newArrayList();
+    private List<String> aliases = Lists.newArrayList();
 
     /**
      * The command sender is either the console or the player.
