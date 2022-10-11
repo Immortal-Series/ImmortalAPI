@@ -8,11 +8,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandMap;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.PluginCommand;
 import org.bukkit.entity.Player;
 
 import java.lang.reflect.Field;
-import java.util.Arrays;
 import java.util.List;
 
 public abstract class ImmortalCommand extends Command implements ImmortalCommandExecutor {
@@ -36,8 +34,8 @@ public abstract class ImmortalCommand extends Command implements ImmortalCommand
     @Setter
     protected boolean handleArgsInMain = false;
 
-    @Getter @Setter
-    private List<String> aliases = Lists.newArrayList();
+    @Getter
+    private final List<String> aliases = Lists.newArrayList();
 
     /**
      * The command sender is either the console or the player.
