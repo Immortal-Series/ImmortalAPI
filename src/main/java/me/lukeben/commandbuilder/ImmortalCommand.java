@@ -286,18 +286,8 @@ public abstract class ImmortalCommand extends Command implements ImmortalCommand
             final Field commandMapField = Bukkit.getServer().getClass().getDeclaredField("commandMap");
             commandMapField.setAccessible(true);
 
-            Command instanceCommand = this;
-            List<String> currentAliases = instanceCommand.getAliases();
-
-            for(String alias : aliases) {
-                currentAliases.add(alias);
-            }
-
-            instanceCommand.setAliases(currentAliases);
-
             final CommandMap commandMap = (CommandMap) commandMapField.get(Bukkit.getServer());
-            commandMap.register(getLabel(), instanceCommand);
-
+            commandMap.register(getLabel(), this);
         } catch (final Exception e) {
             e.printStackTrace();
         }
