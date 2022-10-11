@@ -28,6 +28,11 @@ dependencies {
 }
 
 group = 'me.lukeben'
-version = '1.4'
 description = 'ImmortalAPI'
 java.sourceCompatibility = JavaVersion.VERSION_1_8
+
+task{
+    build{
+        archivesBaseName("ImmortalAPI")
+    }
+}

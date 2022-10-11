@@ -66,6 +66,7 @@ public abstract class ImmortalCommand extends Command implements ImmortalCommand
     protected ImmortalCommand(final String name) {
         super(name);
         subCommands = Lists.newArrayList();
+        this.setAliases(aliases);
 
     }
 
