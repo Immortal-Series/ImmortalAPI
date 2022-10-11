@@ -68,7 +68,7 @@ public abstract class ImmortalCommand extends Command implements ImmortalCommand
     protected ImmortalCommand(final String name) {
         super(name);
         subCommands = Lists.newArrayList();
-
+        this.setAliases(aliases);
     }
 
     // --------------------------------------------------
@@ -297,7 +297,7 @@ public abstract class ImmortalCommand extends Command implements ImmortalCommand
             instanceCommand.setAliases(currentAliases);
 
             final CommandMap commandMap = (CommandMap) commandMapField.get(Bukkit.getServer());
-            commandMap.register(getLabel(), instanceCommand);
+            commandMap.registerAll(getLabel(), currentAliases);
 
         } catch (final Exception e) {
             e.printStackTrace();
