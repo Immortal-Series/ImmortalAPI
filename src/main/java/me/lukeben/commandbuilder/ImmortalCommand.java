@@ -283,8 +283,6 @@ public abstract class ImmortalCommand extends Command implements ImmortalCommand
 
             final CommandMap commandMap = (CommandMap) commandMapField.get(Bukkit.getServer());
             commandMap.register(getLabel(), this);
-            System.out.println(this.getAliases());
-            System.out.println(commandMap.getCommand(getLabel()).getAliases());
         } catch (final Exception e) {
             e.printStackTrace();
         }
