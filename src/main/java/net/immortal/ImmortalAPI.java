@@ -15,9 +15,6 @@ public class ImmortalAPI {
     @Setter
     private JavaPlugin plugin;
 
-    //this is a test method.
-
-
     @Getter
     private static final ImmortalAPI instance = new ImmortalAPI();
 
