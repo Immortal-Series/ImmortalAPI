@@ -28,4 +28,5 @@ dependencies {
 }
 
 group = 'me.lukeben'
+version = '1.7'
 description = 'ImmortalAPI'
