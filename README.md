@@ -8,8 +8,10 @@ This is the general utility for all plugins made by LukeBen.
 First add Jitpack repo.
 ```		
 repositories {
-			maven { url 'https://jitpack.io' }
-		}
+
+    maven { url('https://jitpack.io') }
+    
+}
 ```
 Then declare ImmortalAPI as a depend.
 ```
