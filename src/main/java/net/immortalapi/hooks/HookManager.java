@@ -8,7 +8,7 @@ import java.util.List;
 public class HookManager {
 
     @Getter
-    private static transient final HookManager instance = new HookManager();
+    private static final HookManager instance = new HookManager();
 
     @Getter
     private final List<Hook> hooks = Lists.newArrayList();
