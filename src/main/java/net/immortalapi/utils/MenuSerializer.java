@@ -12,6 +12,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.math.BigInteger;
 import java.util.HashMap;
 
+@SuppressWarnings("unused")
 public class MenuSerializer {
 
     //Code designed to serialize contents of an nbt item.
